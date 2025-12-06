@@ -15,7 +15,7 @@
         android:bottom="300dp">
         <shape android:shape="oval">
             <gradient
-                android:startColor="#33A685FA"
+                android:startColor="#FFA685FA"
                 android:endColor="#00FFFFFF"
                 android:type="radial"
                 android:gradientRadius="400dp"
