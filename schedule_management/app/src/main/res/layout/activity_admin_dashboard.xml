@@ -1,101 +1,94 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#F0F4F8">
+    android:orientation="vertical"
+    android:padding="32dp"
+    android:gravity="center_horizontal"
+    android:background="@drawable/bg_main_gradient"
+    >
 
-    <!-- Header Background Shape -->
-
-
-    <!-- Admin Title -->
+    <!-- Header Section -->
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Admin Dashboard"
-        android:textSize="24sp"
-        android:textStyle="bold"
-        android:textColor="#FFFFFF"
-        android:layout_marginStart="24dp"
-        android:layout_marginTop="32dp"/>
+        android:text="ADMIN PANEL"
+        android:textSize="32sp"
+        android:fontFamily="sans-serif-black"
+        android:layout_marginTop="60dp"
+        android:layout_marginBottom="10dp"
+        android:textColor="@color/text_dark"/>
 
-    <!-- Main Content Card -->
-    <androidx.cardview.widget.CardView
-        android:layout_width="match_parent"
+    <TextView
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="100dp"
-        android:layout_marginStart="16dp"
-        android:layout_marginEnd="16dp"
-        android:layout_marginBottom="16dp"
-        app:cardCornerRadius="16dp"
-        app:cardElevation="8dp"
-        app:cardBackgroundColor="#FFFFFF">
+        android:text="Manage your classes and instructors"
+        android:textSize="16sp"
+        android:layout_marginBottom="60dp"
+        android:textColor="#757575"/>
 
-        <LinearLayout
+
+    <!-- Menu Buttons Container -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:gravity="center"
+        android:orientation="vertical">
+
+        <Button
+            android:id="@+id/btnGoToAddClass"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:padding="24dp">
+            android:layout_height="60dp"
+            android:text="+ Add New Class"
+            android:textSize="16sp"
+            android:textAllCaps="false"
+            android:textColor="@color/white"
+            android:background="@drawable/btn_rounded_purple"
+            android:layout_marginBottom="24dp"
+            android:elevation="4dp"
+            android:stateListAnimator="@null"/>
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Quick Actions"
-                android:textColor="#555555"
-                android:textSize="18sp"
-                android:textStyle="bold"
-                android:layout_marginBottom="24dp"/>
+        <Button
+            android:id="@+id/btnViewAllClasses"
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            android:text="View Master Schedule"
+            android:textSize="16sp"
+            android:textAllCaps="false"
+            android:textColor="@color/white"
+            android:background="@drawable/btn_rounded_purple"
+            android:layout_marginBottom="24dp"
+            android:elevation="4dp"
+            android:stateListAnimator="@null"/>
 
-            <!-- Add Class Button -->
-            <Button
-                android:id="@+id/btnAddClass"
-                android:layout_width="match_parent"
-                android:layout_height="60dp"
-                android:text="Add New Class"
-                android:drawableStart="@android:drawable/ic_input_add"
-                android:drawablePadding="16dp"
-                android:paddingStart="24dp"
-                android:textAlignment="viewStart"
-                android:textColor="#FFFFFF"
-                android:layout_marginBottom="16dp"/>
+        <Button
+            android:id="@+id/btnManageInstructors"
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            android:text="Manage Instructors"
+            android:textSize="16sp"
+            android:textAllCaps="false"
+            android:textColor="@color/white"
+            android:background="@drawable/btn_rounded_purple"
+            android:layout_marginBottom="24dp"
+            android:elevation="4dp"
+            android:stateListAnimator="@null"/>
 
-            <!-- Manage Users Button -->
-            <Button
-                android:id="@+id/btnManageInstructors"
-                android:layout_width="match_parent"
-                android:layout_height="60dp"
-                android:text="Manage Instructors"
-                android:drawableStart="@android:drawable/ic_menu_my_calendar"
-                android:drawablePadding="16dp"
-                android:paddingStart="24dp"
-                android:textAlignment="viewStart"
-                android:backgroundTint="#E0E0E0"
-                android:textColor="#333333"
-                android:layout_marginBottom="16dp"/>
+    </LinearLayout>
 
-            <!-- View All Schedule Button -->
-            <Button
-                android:id="@+id/btnViewSchedule"
-                android:layout_width="match_parent"
-                android:layout_height="60dp"
-                android:text="View Master Schedule"
-                android:drawableStart="@android:drawable/ic_menu_agenda"
-                android:drawablePadding="16dp"
-                android:paddingStart="24dp"
-                android:textAlignment="viewStart"
-                android:backgroundTint="#E0E0E0"
-                android:textColor="#333333"
-                android:layout_marginBottom="32dp"/>
+    <!-- Logout at the bottom -->
+    <Button
+        android:id="@+id/btnLogout"
+        android:layout_width="200dp"
+        android:layout_height="50dp"
+        android:text="Log Out"
+        android:textSize="16sp"
+        android:textAllCaps="false"
+        android:textColor="@color/white"
+        android:background="@drawable/btn_rounded_red"
+        android:layout_marginBottom="32dp"
+        android:elevation="2dp"
+        android:stateListAnimator="@null"/>
 
-            <!-- Logout -->
-            <Button
-                android:id="@+id/btnLogout"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="Log Out"
-                android:backgroundTint="#FF5252"
-                android:textColor="#FFFFFF"/>
-
-        </LinearLayout>
-    </androidx.cardview.widget.CardView>
-</RelativeLayout>
+</LinearLayout>
