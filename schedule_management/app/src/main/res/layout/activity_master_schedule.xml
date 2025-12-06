@@ -1,28 +1,242 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:padding="16dp">
+    android:background="@drawable/bg_main_gradient"
+    android:padding="32dp">
 
+    <!-- Header Section -->
     <TextView
-        android:text="Master Schedule"
-        android:textSize="24sp"
-        android:textStyle="bold"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="16dp"/>
+        android:text="Master Schedule"
+        android:textSize="32sp"
+        android:fontFamily="sans-serif-black"
+        android:layout_marginTop="28dp"
+        android:layout_marginBottom="10dp"
+        android:textColor="@color/text_dark"
+        android:layout_gravity="center_horizontal"/>
 
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="View and manage all classes"
+        android:textSize="16sp"
+        android:textColor="#757575"
+        android:layout_marginBottom="32dp"
+        android:layout_gravity="center_horizontal"/>
+
+    <!-- List Divider/Header -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center_vertical"
+        android:layout_marginBottom="16dp">
+
+        <TextView
+            android:text="Scheduled Classes"
+            android:textSize="20sp"
+            android:fontFamily="sans-serif-black"
+            android:textColor="@color/text_dark"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="wrap_content"/>
+    </LinearLayout>
+
+    <!-- Scrolling List Container -->
     <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:fillViewport="true">
 
         <LinearLayout
             android:id="@+id/llMasterScheduleContainer"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical">
+            android:orientation="vertical"
+            android:paddingBottom="16dp">
+
+            <!-- Item 1: Math 101 -->
+            <androidx.cardview.widget.CardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="16dp"
+                android:layout_marginHorizontal="4dp"
+                app:cardElevation="4dp"
+                app:cardCornerRadius="15dp"
+                app:cardBackgroundColor="@color/white">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:padding="20dp"
+                    android:gravity="center_vertical">
+
+                    <!-- Class Details Section -->
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:id="@+id/tvRowSubject1"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Math 101"
+                            android:textSize="20sp"
+                            android:fontFamily="sans-serif-black"
+                            android:textColor="#333333"
+                            android:layout_marginBottom="4dp"/>
+
+                        <TextView
+                            android:id="@+id/tvRowDetails1"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Section A | Room 304"
+                            android:textSize="14sp"
+                            android:textColor="#666666"
+                            android:layout_marginBottom="2dp"/>
+
+                        <TextView
+                            android:id="@+id/tvRowTime1"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Mon 08:00 - 09:00"
+                            android:textSize="14sp"
+                            android:textStyle="italic"
+                            android:textColor="@color/purple_primary"/>
+                    </LinearLayout>
+
+                    <!-- Actions Section -->
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:gravity="center_horizontal">
+
+                        <Button
+                            android:id="@+id/btnRowEdit1"
+                            android:layout_width="80dp"
+                            android:layout_height="35dp"
+                            android:text="Edit"
+                            android:textSize="12sp"
+                            android:textAllCaps="false"
+                            android:textColor="@color/white"
+                            android:background="@drawable/btn_rounded_purple"
+                            app:backgroundTint="@null"
+                            android:stateListAnimator="@null"
+                            android:layout_marginBottom="8dp"/>
+
+                        <Button
+                            android:id="@+id/btnRowDelete1"
+                            android:layout_width="80dp"
+                            android:layout_height="35dp"
+                            android:text="Delete"
+                            android:textSize="12sp"
+                            android:textAllCaps="false"
+                            android:textColor="@color/white"
+                            android:background="@drawable/btn_rounded_red"
+                            app:backgroundTint="@null"
+                            android:stateListAnimator="@null"/>
+                    </LinearLayout>
+                </LinearLayout>
+            </androidx.cardview.widget.CardView>
+
+            <!-- Item 2: Physics 102 (Example) -->
+            <androidx.cardview.widget.CardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="16dp"
+                android:layout_marginHorizontal="4dp"
+                app:cardElevation="4dp"
+                app:cardCornerRadius="15dp"
+                app:cardBackgroundColor="@color/white">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:padding="20dp"
+                    android:gravity="center_vertical">
+
+                    <!-- Class Details Section -->
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:id="@+id/tvRowSubject2"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Physics 102"
+                            android:textSize="20sp"
+                            android:fontFamily="sans-serif-black"
+                            android:textColor="#333333"
+                            android:layout_marginBottom="4dp"/>
+
+                        <TextView
+                            android:id="@+id/tvRowDetails2"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Section B | Lab 1"
+                            android:textSize="14sp"
+                            android:textColor="#666666"
+                            android:layout_marginBottom="2dp"/>
+
+                        <TextView
+                            android:id="@+id/tvRowTime2"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Tue 10:00 - 11:30"
+                            android:textSize="14sp"
+                            android:textStyle="italic"
+                            android:textColor="@color/purple_primary"/>
+                    </LinearLayout>
+
+                    <!-- Actions Section -->
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:gravity="center_horizontal">
+
+                        <Button
+                            android:id="@+id/btnRowEdit2"
+                            android:layout_width="80dp"
+                            android:layout_height="35dp"
+                            android:text="Edit"
+                            android:textSize="12sp"
+                            android:textAllCaps="false"
+                            android:textColor="@color/white"
+                            android:background="@drawable/btn_rounded_purple"
+                            app:backgroundTint="@null"
+                            android:stateListAnimator="@null"
+                            android:layout_marginBottom="8dp"/>
+
+                        <Button
+                            android:id="@+id/btnRowDelete2"
+                            android:layout_width="80dp"
+                            android:layout_height="35dp"
+                            android:text="Delete"
+                            android:textSize="12sp"
+                            android:textAllCaps="false"
+                            android:textColor="@color/white"
+                            android:background="@drawable/btn_rounded_red"
+                            app:backgroundTint="@null"
+                            android:stateListAnimator="@null"/>
+                    </LinearLayout>
+                </LinearLayout>
+            </androidx.cardview.widget.CardView>
 
         </LinearLayout>
     </ScrollView>
+
 </LinearLayout>
