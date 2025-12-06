@@ -36,6 +36,9 @@
         <activity
             android:name=".AddClassActivity"
             android:exported="false" />
+        <activity
+            android:name=".RegisterActivity"
+            android:exported="false" />
 
     </application>
 

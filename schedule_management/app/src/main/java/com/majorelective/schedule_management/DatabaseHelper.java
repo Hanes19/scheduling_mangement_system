@@ -9,12 +9,14 @@ import android.database.sqlite.SQLiteOpenHelper;
 public class DatabaseHelper extends SQLiteOpenHelper {
 
     private static final String DATABASE_NAME = "ScheduleManager.db";
-    private static final int DATABASE_VERSION = 1;
+    // Increment version to apply new table changes
+    private static final int DATABASE_VERSION = 2;
 
     // Table Names
     private static final String TABLE_USERS = "users";
     private static final String TABLE_CLASSES = "classes";
     private static final String TABLE_INSTRUCTORS = "instructors";
+    private static final String TABLE_STUDENTS = "students"; // New Table
 
     // Common Column Names
     private static final String KEY_ID = "id";
@@ -22,7 +24,16 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     // USERS Table Columns
     private static final String KEY_USERNAME = "username";
     private static final String KEY_PASSWORD = "password";
-    private static final String KEY_ROLE = "role"; // admin, student, instructor
+    private static final String KEY_ROLE = "role";
+
+    // STUDENTS Table Columns (New)
+    private static final String KEY_STUDENT_NAME = "name";
+    private static final String KEY_STUDENT_EMAIL = "email";
+
+    // INSTRUCTORS Table Columns
+    private static final String KEY_NAME = "name";
+    private static final String KEY_DEPT = "department";
+    private static final String KEY_LOGIN_ID = "login_id";
 
     // CLASSES Table Columns
     private static final String KEY_SUBJECT = "subject";
@@ -33,25 +44,20 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     private static final String KEY_ROOM = "room";
     private static final String KEY_INSTRUCTOR_NAME = "instructor_name";
 
-    // INSTRUCTORS Table Columns
-    private static final String KEY_NAME = "name";
-    private static final String KEY_DEPT = "department";
-    private static final String KEY_LOGIN_ID = "login_id";
-
     public DatabaseHelper(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
     }
 
     @Override
     public void onCreate(SQLiteDatabase db) {
-        // Create Users Table
+        // 1. Users Table
         String CREATE_USERS_TABLE = "CREATE TABLE " + TABLE_USERS + "("
                 + KEY_USERNAME + " TEXT PRIMARY KEY,"
                 + KEY_PASSWORD + " TEXT,"
                 + KEY_ROLE + " TEXT" + ")";
         db.execSQL(CREATE_USERS_TABLE);
 
-        // Create Classes Table
+        // 2. Classes Table
         String CREATE_CLASSES_TABLE = "CREATE TABLE " + TABLE_CLASSES + "("
                 + KEY_ID + " INTEGER PRIMARY KEY AUTOINCREMENT,"
                 + KEY_SUBJECT + " TEXT,"
@@ -63,7 +69,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 + KEY_INSTRUCTOR_NAME + " TEXT" + ")";
         db.execSQL(CREATE_CLASSES_TABLE);
 
-        // Create Instructors Table
+        // 3. Instructors Table
         String CREATE_INSTRUCTORS_TABLE = "CREATE TABLE " + TABLE_INSTRUCTORS + "("
                 + KEY_ID + " INTEGER PRIMARY KEY AUTOINCREMENT,"
                 + KEY_NAME + " TEXT,"
@@ -71,10 +77,16 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 + KEY_LOGIN_ID + " TEXT" + ")";
         db.execSQL(CREATE_INSTRUCTORS_TABLE);
 
-        // Insert Default Admin User
+        // 4. Students Table (New)
+        String CREATE_STUDENTS_TABLE = "CREATE TABLE " + TABLE_STUDENTS + "("
+                + KEY_ID + " INTEGER PRIMARY KEY AUTOINCREMENT,"
+                + KEY_STUDENT_NAME + " TEXT,"
+                + KEY_STUDENT_EMAIL + " TEXT" + ")";
+        db.execSQL(CREATE_STUDENTS_TABLE);
+
+        // Insert Defaults
         insertDefaultUser(db, "admin", "admin123", "admin");
         insertDefaultUser(db, "student", "12345", "student");
-        insertDefaultUser(db, "instructor", "12345", "instructor");
     }
 
     private void insertDefaultUser(SQLiteDatabase db, String username, String password, String role) {
@@ -87,14 +99,14 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-        // Drop older tables if existed
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_USERS);
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_CLASSES);
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_INSTRUCTORS);
+        db.execSQL("DROP TABLE IF EXISTS " + TABLE_STUDENTS);
         onCreate(db);
     }
 
-    // --- USER OPERATIONS ---
+    // --- AUTH OPERATIONS ---
 
     public String checkLogin(String username, String password) {
         SQLiteDatabase db = this.getReadableDatabase();
@@ -107,10 +119,39 @@ public class DatabaseHelper extends SQLiteOpenHelper {
             cursor.close();
             return role;
         }
-        return null; // Login failed
+        return null;
     }
 
-    // --- CLASS OPERATIONS ---
+    public boolean registerStudent(String name, String email, String password) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        db.beginTransaction(); // Start Transaction
+        try {
+            // 1. Create User Login
+            ContentValues userValues = new ContentValues();
+            userValues.put(KEY_USERNAME, email);
+            userValues.put(KEY_PASSWORD, password);
+            userValues.put(KEY_ROLE, "student");
+            long result1 = db.insert(TABLE_USERS, null, userValues);
+
+            // 2. Create Student Profile
+            ContentValues studentValues = new ContentValues();
+            studentValues.put(KEY_STUDENT_NAME, name);
+            studentValues.put(KEY_STUDENT_EMAIL, email);
+            long result2 = db.insert(TABLE_STUDENTS, null, studentValues);
+
+            if (result1 != -1 && result2 != -1) {
+                db.setTransactionSuccessful(); // Commit
+                return true;
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            db.endTransaction();
+        }
+        return false;
+    }
+
+    // --- OTHER OPERATIONS (Keep existing ones) ---
 
     public boolean addClass(String subject, String section, String day, String start, String end, String room, String instructor) {
         SQLiteDatabase db = this.getWritableDatabase();
@@ -122,17 +163,15 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         values.put(KEY_END_TIME, end);
         values.put(KEY_ROOM, room);
         values.put(KEY_INSTRUCTOR_NAME, instructor);
-
         long result = db.insert(TABLE_CLASSES, null, values);
         return result != -1;
     }
 
-    // Helper to get all classes (for displaying later)
     public Cursor getAllClasses() {
         SQLiteDatabase db = this.getReadableDatabase();
         return db.rawQuery("SELECT * FROM " + TABLE_CLASSES, null);
     }
-    // --- INSTRUCTOR OPERATIONS ---
+
     public boolean addInstructor(String name, String department, String loginId) {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues values = new ContentValues();
@@ -140,8 +179,8 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         values.put(KEY_DEPT, department);
         values.put(KEY_LOGIN_ID, loginId);
 
-        // Also create a login entry for them so they can actually log in
-        insertDefaultUser(db, loginId, "12345", "instructor"); // Default password
+        // Add login for instructor (default pass 12345)
+        insertDefaultUser(db, loginId, "12345", "instructor");
 
         long result = db.insert(TABLE_INSTRUCTORS, null, values);
         return result != -1;
