@@ -1,5 +1,11 @@
-<?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="black">#FF000000</color>
-    <color name="white">#FFFFFFFF</color>
+<!-- Purple Theme Colors from your image -->
+<color name="purple_primary">#A685FA</color>
+<color name="purple_dark">#7C4DFF</color>
+<color name="purple_light_bg">#F3E5F5</color>
+<color name="white">#FFFFFF</color>
+<color name="text_dark">#333333</color>
+<color name="black">#FF000000</color>
+
+<color name="logout_red">#D32F2F</color>
 </resources>
