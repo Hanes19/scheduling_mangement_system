@@ -8,16 +8,36 @@
     android:padding="32dp">
 
     <!-- Header Section -->
-    <TextView
-        android:layout_width="wrap_content"
+    <RelativeLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Register Instructor"
-        android:textSize="32sp"
-        android:fontFamily="sans-serif-black"
-        android:layout_marginTop="28dp"
-        android:layout_marginBottom="10dp"
-        android:textColor="@color/text_dark"
-        android:layout_gravity="center_horizontal"/>
+        android:layout_marginTop="16dp"
+        android:layout_marginBottom="10dp">
+
+        <ImageButton
+            android:id="@+id/btnBack"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:src="@drawable/back_btn"
+            android:background="?android:attr/selectableItemBackgroundBorderless"
+            android:scaleType="centerInside"
+            android:contentDescription="Back"
+            app:tint="#333333"
+            android:layout_alignParentStart="true"
+            android:layout_centerVertical="true"
+            android:layout_marginStart="-1dp"/>
+
+        <TextView
+            android:id="@+id/tvWelcomeStudent"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Register Instrutor"
+            android:textSize="32sp"
+            android:fontFamily="sans-serif-black"
+            android:textColor="@color/text_dark"
+            android:layout_centerInParent="true"/>
+
+    </RelativeLayout>
 
     <TextView
         android:layout_width="wrap_content"

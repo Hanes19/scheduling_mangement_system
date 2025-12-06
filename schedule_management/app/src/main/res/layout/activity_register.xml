@@ -65,6 +65,48 @@
                     android:textSize="14sp"
                     android:layout_marginBottom="16dp"/>
 
+                <!-- Course Input -->
+                <EditText
+                    android:id="@+id/etRegCourse"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="Course (e.g. BSIT)"
+                    android:inputType="textCapCharacters"
+                    android:drawableStart="@android:drawable/ic_menu_sort_by_size"
+                    android:drawablePadding="16dp"
+                    android:padding="12dp"
+                    android:backgroundTint="#CCCCCC"
+                    android:textSize="14sp"
+                    android:layout_marginBottom="16dp"/>
+
+                <!-- Year Level Input -->
+                <EditText
+                    android:id="@+id/etRegYear"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="Year Level (e.g. 3)"
+                    android:inputType="number"
+                    android:drawableStart="@android:drawable/ic_menu_today"
+                    android:drawablePadding="16dp"
+                    android:padding="12dp"
+                    android:backgroundTint="#CCCCCC"
+                    android:textSize="14sp"
+                    android:layout_marginBottom="16dp"/>
+
+                <!-- Section Input -->
+                <EditText
+                    android:id="@+id/etRegSection"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="Section (e.g. A)"
+                    android:inputType="textCapCharacters"
+                    android:drawableStart="@android:drawable/ic_menu_info_details"
+                    android:drawablePadding="16dp"
+                    android:padding="12dp"
+                    android:backgroundTint="#CCCCCC"
+                    android:textSize="14sp"
+                    android:layout_marginBottom="16dp"/>
+
                 <!-- Password Input -->
                 <EditText
                     android:id="@+id/etRegPassword"
