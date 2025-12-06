@@ -3,17 +3,15 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/bg_main_gradient"
-    >
-
+    android:background="@drawable/bg_main_gradient">
 
     <androidx.cardview.widget.CardView
         android:layout_width="320dp"
         android:layout_height="wrap_content"
         android:layout_centerInParent="true"
-        app:cardCornerRadius="16dp"
-        app:cardElevation="12dp"
-        app:cardBackgroundColor="#FFFFFF">
+        app:cardCornerRadius="20dp"
+        app:cardElevation="8dp"
+        app:cardBackgroundColor="@color/white">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -22,21 +20,26 @@
             android:padding="32dp"
             android:gravity="center_horizontal">
 
+            <!-- Logo/Icon -->
+            <!-- Note: Replace src with your specific logo if available -->
             <ImageView
                 android:layout_width="60dp"
                 android:layout_height="60dp"
                 android:src="@android:drawable/ic_menu_compass"
+                android:tint="#333333"
                 android:layout_marginBottom="16dp"/>
 
+            <!-- Header -->
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Login"
-                android:textSize="28sp"
-                android:textStyle="bold"
-                android:textColor="#000000"
+                android:textSize="32sp"
+                android:fontFamily="sans-serif-black"
+                android:textColor="#333333"
                 android:layout_marginBottom="30dp"/>
 
+            <!-- Email Input -->
             <EditText
                 android:id="@+id/etEmail"
                 android:layout_width="match_parent"
@@ -44,12 +47,13 @@
                 android:hint="School ID / Email"
                 android:inputType="textEmailAddress"
                 android:drawableStart="@android:drawable/ic_dialog_email"
-                android:drawablePadding="12dp"
+                android:drawablePadding="16dp"
                 android:backgroundTint="#CCCCCC"
                 android:textSize="14sp"
                 android:padding="12dp"
                 android:layout_marginBottom="16dp"/>
 
+            <!-- Password Input -->
             <EditText
                 android:id="@+id/etPassword"
                 android:layout_width="match_parent"
@@ -57,36 +61,45 @@
                 android:hint="Password"
                 android:inputType="textPassword"
                 android:drawableStart="@android:drawable/ic_lock_lock"
-                android:drawablePadding="12dp"
+                android:drawablePadding="16dp"
                 android:backgroundTint="#CCCCCC"
                 android:textSize="14sp"
                 android:padding="12dp"
-                android:layout_marginBottom="30dp"/>
+                android:layout_marginBottom="32dp"/>
 
+            <!-- Login Button -->
             <Button
                 android:id="@+id/btnLogin"
                 android:layout_width="match_parent"
                 android:layout_height="55dp"
                 android:text="Login"
                 android:textAllCaps="false"
-                android:textColor="#FFFFFF"
-                android:textSize="16sp"
-                android:elevation="4dp"/>
+                android:textColor="@color/white"
+                android:textSize="18sp"
+                android:background="@drawable/btn_rounded_purple"
+                app:backgroundTint="@null"
+                android:elevation="4dp"
+                android:stateListAnimator="@null"/>
 
+            <!-- Sign Up Link -->
             <TextView
+                android:id="@+id/tvGoToRegister"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="or Sign Up"
-                android:textColor="#2962FF"
-                android:layout_marginTop="20dp"/>
+                android:textColor="@color/purple_primary"
+                android:textStyle="bold"
+                android:layout_marginTop="24dp"/>
 
+            <!-- Forgot Password Link -->
             <TextView
+                android:id="@+id/tvForgotPassword"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Forgot password?"
-                android:textColor="#AAAAAA"
-                android:textSize="12sp"
-                android:layout_marginTop="30dp"/>
+                android:textColor="#999999"
+                android:textSize="14sp"
+                android:layout_marginTop="24dp"/>
 
         </LinearLayout>
     </androidx.cardview.widget.CardView>

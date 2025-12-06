@@ -1,58 +1,167 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:padding="16dp">
+    android:background="@drawable/bg_main_gradient"
+    android:padding="32dp">
+
+    <!-- Header Section -->
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Register Instructor"
+        android:textSize="32sp"
+        android:fontFamily="sans-serif-black"
+        android:layout_marginTop="28dp"
+        android:layout_marginBottom="10dp"
+        android:textColor="@color/text_dark"
+        android:layout_gravity="center_horizontal"/>
 
     <TextView
-        android:text="Register New Instructor"
-        android:textSize="20sp"
-        android:textStyle="bold"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"/>
+        android:layout_height="wrap_content"
+        android:text="Add a new teacher to the system"
+        android:textSize="16sp"
+        android:textColor="#757575"
+        android:layout_marginBottom="32dp"
+        android:layout_gravity="center_horizontal"/>
+
+    <!-- Form Section -->
+
+    <!-- Name Input -->
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Full Name"
+        android:textColor="#666666"
+        android:textSize="14sp"
+        android:layout_marginStart="8dp"
+        android:layout_marginBottom="6dp"/>
 
     <EditText
         android:id="@+id/etInstName"
-        android:hint="Full Name"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"/>
+        android:layout_height="50dp"
+        android:background="@drawable/bg_input_rounded"
+        android:paddingStart="16dp"
+        android:paddingEnd="16dp"
+        android:hint="e.g. John Doe"
+        android:textColor="#333333"
+        android:textColorHint="#999999"
+        android:textSize="16sp"
+        android:inputType="textPersonName"
+        android:layout_marginBottom="16dp"/>
+
+    <!-- Department Input -->
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Department"
+        android:textColor="#666666"
+        android:textSize="14sp"
+        android:layout_marginStart="8dp"
+        android:layout_marginBottom="6dp"/>
 
     <EditText
         android:id="@+id/etInstDept"
-        android:hint="Department (e.g. IT)"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"/>
+        android:layout_height="50dp"
+        android:background="@drawable/bg_input_rounded"
+        android:paddingStart="16dp"
+        android:paddingEnd="16dp"
+        android:hint="e.g. Information Technology"
+        android:textColor="#333333"
+        android:textColorHint="#999999"
+        android:textSize="16sp"
+        android:inputType="textCapWords"
+        android:layout_marginBottom="16dp"/>
+
+    <!-- Login ID Input -->
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="System Login ID"
+        android:textColor="#666666"
+        android:textSize="14sp"
+        android:layout_marginStart="8dp"
+        android:layout_marginBottom="6dp"/>
 
     <EditText
         android:id="@+id/etInstID"
-        android:hint="Login ID (e.g. teacher1)"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"/>
-
-    <Button
-        android:id="@+id/btnAddInstructor"
-        android:text="Add to System"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="50dp"
+        android:background="@drawable/bg_input_rounded"
+        android:paddingStart="16dp"
+        android:paddingEnd="16dp"
+        android:hint="e.g. teacher_01"
+        android:textColor="#333333"
+        android:textColorHint="#999999"
+        android:textSize="16sp"
+        android:inputType="text"
         android:layout_marginBottom="24dp"/>
 
-    <TextView
-        android:text="Current Instructors"
-        android:textSize="20sp"
-        android:textStyle="bold"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"/>
+    <!-- Add Button -->
+    <Button
+        android:id="@+id/btnAddInstructor"
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:text="Add to System"
+        android:textSize="16sp"
+        android:textAllCaps="false"
+        android:textColor="@color/white"
+        android:background="@drawable/btn_rounded_purple"
+        app:backgroundTint="@null"
+        android:elevation="4dp"
+        android:stateListAnimator="@null"
+        android:layout_marginBottom="32dp"/>
 
+    <!-- List Divider/Header -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center_vertical"
+        android:layout_marginBottom="16dp">
+
+        <TextView
+            android:text="Current Instructors"
+            android:textSize="20sp"
+            android:fontFamily="sans-serif-black"
+            android:textColor="@color/text_dark"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="wrap_content"/>
+
+        <!-- Optional: A small counter or filter icon could go here -->
+    </LinearLayout>
+
+    <!-- Scrolling List Container -->
+    <!-- layout_weight="1" ensures this fills the remaining screen space -->
     <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:fillViewport="true">
 
         <LinearLayout
             android:id="@+id/llInstructorListContainer"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical">
+            android:orientation="vertical"
+            android:paddingBottom="16dp">
+
+            <!-- This is where your instructor rows will be added dynamically in Java/Kotlin -->
+            <!-- Placeholder for preview: -->
+            <!--
+            <TextView
+                android:text="No instructors added yet."
+                android:gravity="center"
+                android:padding="20dp"
+                android:textColor="#999999"/>
+            -->
+
         </LinearLayout>
     </ScrollView>
 
