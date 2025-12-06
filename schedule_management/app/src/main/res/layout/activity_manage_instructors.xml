@@ -7,7 +7,7 @@
     android:background="@drawable/bg_main_gradient"
     android:padding="32dp">
 
-    <!-- Header Section -->
+    <!-- Fixed Header Section -->
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -40,126 +40,7 @@
 
     </LinearLayout>
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Add a new teacher to the system"
-        android:textSize="16sp"
-        android:textColor="#757575"
-        android:layout_marginBottom="32dp"
-        android:layout_gravity="center_horizontal"/>
-
-    <!-- Form Section -->
-
-    <!-- Name Input -->
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Full Name"
-        android:textColor="#666666"
-        android:textSize="14sp"
-        android:layout_marginStart="8dp"
-        android:layout_marginBottom="6dp"/>
-
-    <EditText
-        android:id="@+id/etInstName"
-        android:layout_width="match_parent"
-        android:layout_height="50dp"
-        android:background="@drawable/bg_input_rounded"
-        android:paddingStart="16dp"
-        android:paddingEnd="16dp"
-        android:hint="e.g. John Doe"
-        android:textColor="#333333"
-        android:textColorHint="#999999"
-        android:textSize="16sp"
-        android:inputType="textPersonName"
-        android:layout_marginBottom="16dp"/>
-
-    <!-- Department Input -->
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Department"
-        android:textColor="#666666"
-        android:textSize="14sp"
-        android:layout_marginStart="8dp"
-        android:layout_marginBottom="6dp"/>
-
-    <EditText
-        android:id="@+id/etInstDept"
-        android:layout_width="match_parent"
-        android:layout_height="50dp"
-        android:background="@drawable/bg_input_rounded"
-        android:paddingStart="16dp"
-        android:paddingEnd="16dp"
-        android:hint="e.g. Information Technology"
-        android:textColor="#333333"
-        android:textColorHint="#999999"
-        android:textSize="16sp"
-        android:inputType="textCapWords"
-        android:layout_marginBottom="16dp"/>
-
-    <!-- Login ID Input -->
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="System Login ID"
-        android:textColor="#666666"
-        android:textSize="14sp"
-        android:layout_marginStart="8dp"
-        android:layout_marginBottom="6dp"/>
-
-    <EditText
-        android:id="@+id/etInstID"
-        android:layout_width="match_parent"
-        android:layout_height="50dp"
-        android:background="@drawable/bg_input_rounded"
-        android:paddingStart="16dp"
-        android:paddingEnd="16dp"
-        android:hint="e.g. teacher_01"
-        android:textColor="#333333"
-        android:textColorHint="#999999"
-        android:textSize="16sp"
-        android:inputType="text"
-        android:layout_marginBottom="24dp"/>
-
-    <!-- Add Button -->
-    <Button
-        android:id="@+id/btnAddInstructor"
-        android:layout_width="match_parent"
-        android:layout_height="60dp"
-        android:text="Add to System"
-        android:textSize="16sp"
-        android:textAllCaps="false"
-        android:textColor="@color/white"
-        android:background="@drawable/btn_rounded_purple"
-        app:backgroundTint="@null"
-        android:elevation="4dp"
-        android:stateListAnimator="@null"
-        android:layout_marginBottom="32dp"/>
-
-    <!-- List Divider/Header -->
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:gravity="center_vertical"
-        android:layout_marginBottom="16dp">
-
-        <TextView
-            android:text="Current Instructors"
-            android:textSize="20sp"
-            android:fontFamily="sans-serif-black"
-            android:textColor="@color/text_dark"
-            android:layout_width="0dp"
-            android:layout_weight="1"
-            android:layout_height="wrap_content"/>
-
-        <!-- Optional: A small counter or filter icon could go here -->
-    </LinearLayout>
-
-    <!-- Scrolling List Container -->
-    <!-- layout_weight="1" ensures this fills the remaining screen space -->
+    <!-- Scrollable Form & List -->
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="0dp"
@@ -167,21 +48,251 @@
         android:fillViewport="true">
 
         <LinearLayout
-            android:id="@+id/llInstructorListContainer"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
             android:paddingBottom="16dp">
 
-            <!-- This is where your instructor rows will be added dynamically in Java/Kotlin -->
-            <!-- Placeholder for preview: -->
-            <!--
             <TextView
-                android:text="No instructors added yet."
-                android:gravity="center"
-                android:padding="20dp"
-                android:textColor="#999999"/>
-            -->
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Add a new teacher to the system"
+                android:textSize="16sp"
+                android:textColor="#757575"
+                android:layout_marginBottom="24dp"
+                android:layout_gravity="center_horizontal"/>
+
+            <!-- Name Input -->
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Full Name"
+                android:textColor="#666666"
+                android:textSize="14sp"
+                android:layout_marginStart="8dp"
+                android:layout_marginBottom="6dp"/>
+
+            <EditText
+                android:id="@+id/etInstName"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:background="@drawable/bg_input_rounded"
+                android:paddingStart="16dp"
+                android:paddingEnd="16dp"
+                android:hint="e.g. John Doe"
+                android:textColor="#333333"
+                android:textColorHint="#999999"
+                android:textSize="16sp"
+                android:inputType="textPersonName"
+                android:layout_marginBottom="16dp"/>
+
+            <!-- Department Input -->
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Department"
+                android:textColor="#666666"
+                android:textSize="14sp"
+                android:layout_marginStart="8dp"
+                android:layout_marginBottom="6dp"/>
+
+            <EditText
+                android:id="@+id/etInstDept"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:background="@drawable/bg_input_rounded"
+                android:paddingStart="16dp"
+                android:paddingEnd="16dp"
+                android:hint="e.g. Information Technology"
+                android:textColor="#333333"
+                android:textColorHint="#999999"
+                android:textSize="16sp"
+                android:inputType="textCapWords"
+                android:layout_marginBottom="16dp"/>
+
+            <!-- Subject Input (NEW) -->
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Subject"
+                android:textColor="#666666"
+                android:textSize="14sp"
+                android:layout_marginStart="8dp"
+                android:layout_marginBottom="6dp"/>
+
+            <EditText
+                android:id="@+id/etInstSubject"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:background="@drawable/bg_input_rounded"
+                android:paddingStart="16dp"
+                android:paddingEnd="16dp"
+                android:hint="e.g. Programming 1"
+                android:textColor="#333333"
+                android:textColorHint="#999999"
+                android:textSize="16sp"
+                android:inputType="textCapWords"
+                android:layout_marginBottom="16dp"/>
+
+            <!-- Year & Section Row (NEW) -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:baselineAligned="false"
+                android:layout_marginBottom="16dp">
+
+                <!-- Year Input -->
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:orientation="vertical"
+                    android:layout_marginEnd="8dp">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Year"
+                        android:textColor="#666666"
+                        android:textSize="14sp"
+                        android:layout_marginStart="8dp"
+                        android:layout_marginBottom="6dp"/>
+
+                    <EditText
+                        android:id="@+id/etInstYear"
+                        android:layout_width="match_parent"
+                        android:layout_height="50dp"
+                        android:background="@drawable/bg_input_rounded"
+                        android:paddingStart="16dp"
+                        android:paddingEnd="16dp"
+                        android:hint="e.g. 1"
+                        android:textColor="#333333"
+                        android:textColorHint="#999999"
+                        android:textSize="16sp"
+                        android:inputType="number"/>
+                </LinearLayout>
+
+                <!-- Section Input -->
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:orientation="vertical"
+                    android:layout_marginStart="8dp">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Section"
+                        android:textColor="#666666"
+                        android:textSize="14sp"
+                        android:layout_marginStart="8dp"
+                        android:layout_marginBottom="6dp"/>
+
+                    <EditText
+                        android:id="@+id/etInstSection"
+                        android:layout_width="match_parent"
+                        android:layout_height="50dp"
+                        android:background="@drawable/bg_input_rounded"
+                        android:paddingStart="16dp"
+                        android:paddingEnd="16dp"
+                        android:hint="e.g. A"
+                        android:textColor="#333333"
+                        android:textColorHint="#999999"
+                        android:textSize="16sp"
+                        android:inputType="textCapCharacters"/>
+                </LinearLayout>
+            </LinearLayout>
+
+            <!-- Login ID Input -->
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="System Login ID"
+                android:textColor="#666666"
+                android:textSize="14sp"
+                android:layout_marginStart="8dp"
+                android:layout_marginBottom="6dp"/>
+
+            <EditText
+                android:id="@+id/etInstID"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:background="@drawable/bg_input_rounded"
+                android:paddingStart="16dp"
+                android:paddingEnd="16dp"
+                android:hint="e.g. teacher_01"
+                android:textColor="#333333"
+                android:textColorHint="#999999"
+                android:textSize="16sp"
+                android:inputType="text"
+                android:layout_marginBottom="16dp"/>
+
+            <!-- Password Input (NEW) -->
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Password"
+                android:textColor="#666666"
+                android:textSize="14sp"
+                android:layout_marginStart="8dp"
+                android:layout_marginBottom="6dp"/>
+
+            <EditText
+                android:id="@+id/etInstPassword"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:background="@drawable/bg_input_rounded"
+                android:paddingStart="16dp"
+                android:paddingEnd="16dp"
+                android:hint="••••••••"
+                android:textColor="#333333"
+                android:textColorHint="#999999"
+                android:textSize="16sp"
+                android:inputType="textPassword"
+                android:layout_marginBottom="24dp"/>
+
+            <!-- Add Button -->
+            <Button
+                android:id="@+id/btnAddInstructor"
+                android:layout_width="match_parent"
+                android:layout_height="60dp"
+                android:text="Add to System"
+                android:textSize="16sp"
+                android:textAllCaps="false"
+                android:textColor="@color/white"
+                android:background="@drawable/btn_rounded_purple"
+                app:backgroundTint="@null"
+                android:elevation="4dp"
+                android:stateListAnimator="@null"
+                android:layout_marginBottom="32dp"/>
+
+            <!-- List Divider/Header -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:gravity="center_vertical"
+                android:layout_marginBottom="16dp">
+
+                <TextView
+                    android:text="Current Instructors"
+                    android:textSize="20sp"
+                    android:fontFamily="sans-serif-black"
+                    android:textColor="@color/text_dark"
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:layout_height="wrap_content"/>
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/llInstructorListContainer"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+                <!-- List items would go here -->
+            </LinearLayout>
 
         </LinearLayout>
     </ScrollView>
