@@ -8,17 +8,20 @@ import androidx.appcompat.app.AppCompatActivity;
 
 public class AddClassActivity extends AppCompatActivity {
 
+    private DatabaseHelper dbHelper; // Declare DatabaseHelper
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        // This links to your activity_add_class.xml file
         setContentView(R.layout.activity_add_class);
+
+        // Initialize DB Helper
+        dbHelper = new DatabaseHelper(this);
 
         setupUI();
     }
 
     private void setupUI() {
-        // 1. Find all the input fields by ID
         EditText etSubject = findViewById(R.id.etSubject);
         EditText etSection = findViewById(R.id.etSection);
         EditText etDay = findViewById(R.id.etDay);
@@ -28,16 +31,27 @@ public class AddClassActivity extends AppCompatActivity {
         EditText etInstructor = findViewById(R.id.etInstructor);
         Button btnSave = findViewById(R.id.btnSaveClass);
 
-        // 2. Add functionality to the "Save Class" button
         btnSave.setOnClickListener(v -> {
-            // For now, just show a message and close the screen
             String subject = etSubject.getText().toString();
+            String section = etSection.getText().toString();
+            String day = etDay.getText().toString();
+            String start = etStartTime.getText().toString();
+            String end = etEndTime.getText().toString();
+            String room = etRoom.getText().toString();
+            String instructor = etInstructor.getText().toString();
 
-            if (subject.isEmpty()) {
-                Toast.makeText(this, "Please enter a subject", Toast.LENGTH_SHORT).show();
+            if (subject.isEmpty() || section.isEmpty() || day.isEmpty()) {
+                Toast.makeText(this, "Please fill in all required fields", Toast.LENGTH_SHORT).show();
             } else {
-                Toast.makeText(this, "Class " + subject + " Saved!", Toast.LENGTH_SHORT).show();
-                finish(); // Go back to the Dashboard
+                // Save to Database
+                boolean isInserted = dbHelper.addClass(subject, section, day, start, end, room, instructor);
+
+                if (isInserted) {
+                    Toast.makeText(this, "Class Saved Successfully!", Toast.LENGTH_SHORT).show();
+                    finish(); // Go back to Dashboard
+                } else {
+                    Toast.makeText(this, "Error Saving Class", Toast.LENGTH_SHORT).show();
+                }
             }
         });
     }
