@@ -148,7 +148,7 @@
                 </LinearLayout>
             </androidx.cardview.widget.CardView>
 
-            <!-- Item 2: Physics 102 (Example) -->
+            <!-- Item 2: Physics 102 -->
             <androidx.cardview.widget.CardView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -165,7 +165,6 @@
                     android:padding="20dp"
                     android:gravity="center_vertical">
 
-                    <!-- Class Details Section -->
                     <LinearLayout
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
@@ -201,7 +200,6 @@
                             android:textColor="@color/purple_primary"/>
                     </LinearLayout>
 
-                    <!-- Actions Section -->
                     <LinearLayout
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -223,6 +221,350 @@
 
                         <Button
                             android:id="@+id/btnRowDelete2"
+                            android:layout_width="80dp"
+                            android:layout_height="35dp"
+                            android:text="Delete"
+                            android:textSize="12sp"
+                            android:textAllCaps="false"
+                            android:textColor="@color/white"
+                            android:background="@drawable/btn_rounded_red"
+                            app:backgroundTint="@null"
+                            android:stateListAnimator="@null"/>
+                    </LinearLayout>
+                </LinearLayout>
+            </androidx.cardview.widget.CardView>
+
+            <!-- Item 3: Chemistry 101 -->
+            <androidx.cardview.widget.CardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="16dp"
+                android:layout_marginHorizontal="4dp"
+                app:cardElevation="4dp"
+                app:cardCornerRadius="15dp"
+                app:cardBackgroundColor="@color/white">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:padding="20dp"
+                    android:gravity="center_vertical">
+
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:id="@+id/tvRowSubject3"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Chemistry 101"
+                            android:textSize="20sp"
+                            android:fontFamily="sans-serif-black"
+                            android:textColor="#333333"
+                            android:layout_marginBottom="4dp"/>
+
+                        <TextView
+                            android:id="@+id/tvRowDetails3"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Section C | Lab 3"
+                            android:textSize="14sp"
+                            android:textColor="#666666"
+                            android:layout_marginBottom="2dp"/>
+
+                        <TextView
+                            android:id="@+id/tvRowTime3"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Wed 02:00 - 04:00"
+                            android:textSize="14sp"
+                            android:textStyle="italic"
+                            android:textColor="@color/purple_primary"/>
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:gravity="center_horizontal">
+
+                        <Button
+                            android:id="@+id/btnRowEdit3"
+                            android:layout_width="80dp"
+                            android:layout_height="35dp"
+                            android:text="Edit"
+                            android:textSize="12sp"
+                            android:textAllCaps="false"
+                            android:textColor="@color/white"
+                            android:background="@drawable/btn_rounded_purple"
+                            app:backgroundTint="@null"
+                            android:stateListAnimator="@null"
+                            android:layout_marginBottom="8dp"/>
+
+                        <Button
+                            android:id="@+id/btnRowDelete3"
+                            android:layout_width="80dp"
+                            android:layout_height="35dp"
+                            android:text="Delete"
+                            android:textSize="12sp"
+                            android:textAllCaps="false"
+                            android:textColor="@color/white"
+                            android:background="@drawable/btn_rounded_red"
+                            app:backgroundTint="@null"
+                            android:stateListAnimator="@null"/>
+                    </LinearLayout>
+                </LinearLayout>
+            </androidx.cardview.widget.CardView>
+
+            <!-- Item 4: Biology 105 -->
+            <androidx.cardview.widget.CardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="16dp"
+                android:layout_marginHorizontal="4dp"
+                app:cardElevation="4dp"
+                app:cardCornerRadius="15dp"
+                app:cardBackgroundColor="@color/white">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:padding="20dp"
+                    android:gravity="center_vertical">
+
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:id="@+id/tvRowSubject4"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Biology 105"
+                            android:textSize="20sp"
+                            android:fontFamily="sans-serif-black"
+                            android:textColor="#333333"
+                            android:layout_marginBottom="4dp"/>
+
+                        <TextView
+                            android:id="@+id/tvRowDetails4"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Section A | Room 202"
+                            android:textSize="14sp"
+                            android:textColor="#666666"
+                            android:layout_marginBottom="2dp"/>
+
+                        <TextView
+                            android:id="@+id/tvRowTime4"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Thu 11:00 - 12:30"
+                            android:textSize="14sp"
+                            android:textStyle="italic"
+                            android:textColor="@color/purple_primary"/>
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:gravity="center_horizontal">
+
+                        <Button
+                            android:id="@+id/btnRowEdit4"
+                            android:layout_width="80dp"
+                            android:layout_height="35dp"
+                            android:text="Edit"
+                            android:textSize="12sp"
+                            android:textAllCaps="false"
+                            android:textColor="@color/white"
+                            android:background="@drawable/btn_rounded_purple"
+                            app:backgroundTint="@null"
+                            android:stateListAnimator="@null"
+                            android:layout_marginBottom="8dp"/>
+
+                        <Button
+                            android:id="@+id/btnRowDelete4"
+                            android:layout_width="80dp"
+                            android:layout_height="35dp"
+                            android:text="Delete"
+                            android:textSize="12sp"
+                            android:textAllCaps="false"
+                            android:textColor="@color/white"
+                            android:background="@drawable/btn_rounded_red"
+                            app:backgroundTint="@null"
+                            android:stateListAnimator="@null"/>
+                    </LinearLayout>
+                </LinearLayout>
+            </androidx.cardview.widget.CardView>
+
+            <!-- Item 5: History 201 -->
+            <androidx.cardview.widget.CardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="16dp"
+                android:layout_marginHorizontal="4dp"
+                app:cardElevation="4dp"
+                app:cardCornerRadius="15dp"
+                app:cardBackgroundColor="@color/white">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:padding="20dp"
+                    android:gravity="center_vertical">
+
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:id="@+id/tvRowSubject5"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="History 201"
+                            android:textSize="20sp"
+                            android:fontFamily="sans-serif-black"
+                            android:textColor="#333333"
+                            android:layout_marginBottom="4dp"/>
+
+                        <TextView
+                            android:id="@+id/tvRowDetails5"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Section B | Room 105"
+                            android:textSize="14sp"
+                            android:textColor="#666666"
+                            android:layout_marginBottom="2dp"/>
+
+                        <TextView
+                            android:id="@+id/tvRowTime5"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Fri 09:00 - 10:30"
+                            android:textSize="14sp"
+                            android:textStyle="italic"
+                            android:textColor="@color/purple_primary"/>
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:gravity="center_horizontal">
+
+                        <Button
+                            android:id="@+id/btnRowEdit5"
+                            android:layout_width="80dp"
+                            android:layout_height="35dp"
+                            android:text="Edit"
+                            android:textSize="12sp"
+                            android:textAllCaps="false"
+                            android:textColor="@color/white"
+                            android:background="@drawable/btn_rounded_purple"
+                            app:backgroundTint="@null"
+                            android:stateListAnimator="@null"
+                            android:layout_marginBottom="8dp"/>
+
+                        <Button
+                            android:id="@+id/btnRowDelete5"
+                            android:layout_width="80dp"
+                            android:layout_height="35dp"
+                            android:text="Delete"
+                            android:textSize="12sp"
+                            android:textAllCaps="false"
+                            android:textColor="@color/white"
+                            android:background="@drawable/btn_rounded_red"
+                            app:backgroundTint="@null"
+                            android:stateListAnimator="@null"/>
+                    </LinearLayout>
+                </LinearLayout>
+            </androidx.cardview.widget.CardView>
+
+            <!-- Item 6: Computer Sci 101 -->
+            <androidx.cardview.widget.CardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="16dp"
+                android:layout_marginHorizontal="4dp"
+                app:cardElevation="4dp"
+                app:cardCornerRadius="15dp"
+                app:cardBackgroundColor="@color/white">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:padding="20dp"
+                    android:gravity="center_vertical">
+
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:id="@+id/tvRowSubject6"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Comp Sci 101"
+                            android:textSize="20sp"
+                            android:fontFamily="sans-serif-black"
+                            android:textColor="#333333"
+                            android:layout_marginBottom="4dp"/>
+
+                        <TextView
+                            android:id="@+id/tvRowDetails6"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Section A | Room 101"
+                            android:textSize="14sp"
+                            android:textColor="#666666"
+                            android:layout_marginBottom="2dp"/>
+
+                        <TextView
+                            android:id="@+id/tvRowTime6"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Fri 13:00 - 14:30"
+                            android:textSize="14sp"
+                            android:textStyle="italic"
+                            android:textColor="@color/purple_primary"/>
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:gravity="center_horizontal">
+
+                        <Button
+                            android:id="@+id/btnRowEdit6"
+                            android:layout_width="80dp"
+                            android:layout_height="35dp"
+                            android:text="Edit"
+                            android:textSize="12sp"
+                            android:textAllCaps="false"
+                            android:textColor="@color/white"
+                            android:background="@drawable/btn_rounded_purple"
+                            app:backgroundTint="@null"
+                            android:stateListAnimator="@null"
+                            android:layout_marginBottom="8dp"/>
+
+                        <Button
+                            android:id="@+id/btnRowDelete6"
                             android:layout_width="80dp"
                             android:layout_height="35dp"
                             android:text="Delete"
