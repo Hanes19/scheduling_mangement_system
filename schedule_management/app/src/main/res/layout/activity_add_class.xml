@@ -13,16 +13,37 @@
         android:padding="32dp">
 
         <!-- Header -->
-        <TextView
-            android:layout_width="wrap_content"
+        <LinearLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Add New Class"
-            android:textSize="32sp"
-            android:fontFamily="sans-serif-black"
-            android:layout_marginTop="28dp"
-            android:layout_marginBottom="10dp"
-            android:textColor="@color/text_dark"
-            android:layout_gravity="center_horizontal"/>
+            android:orientation="vertical"
+            android:layout_marginBottom="10dp">
+
+            <!-- Back Button (Top Left) -->
+            <ImageButton
+                android:id="@+id/btnBack"
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:src="@drawable/back_btn"
+                android:background="?android:attr/selectableItemBackgroundBorderless"
+                android:scaleType="centerInside"
+                android:contentDescription="Back"
+                app:tint="#333333"
+                android:layout_gravity="start"
+                android:layout_marginBottom="8dp"/>
+
+            <!-- Title (Centered below button) -->
+            <TextView
+                android:id="@+id/tvWelcomeStudent"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Add Class"
+                android:textSize="32sp"
+                android:fontFamily="sans-serif-black"
+                android:textColor="@color/text_dark"
+                android:layout_gravity="center_horizontal"/>
+
+        </LinearLayout>
 
         <TextView
             android:layout_width="wrap_content"

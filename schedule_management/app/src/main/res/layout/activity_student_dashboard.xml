@@ -9,25 +9,26 @@
     android:padding="32dp">
 
     <!-- Header Section with Back Button -->
-    <RelativeLayout
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
+        android:orientation="vertical"
         android:layout_marginBottom="10dp">
 
+        <!-- Back Button (Top Left) -->
         <ImageButton
             android:id="@+id/btnBack"
-            android:layout_width="30dp"
-            android:layout_height="30dp"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
             android:src="@drawable/back_btn"
             android:background="?android:attr/selectableItemBackgroundBorderless"
             android:scaleType="centerInside"
             android:contentDescription="Back"
             app:tint="#333333"
-            android:layout_alignParentStart="true"
-            android:layout_centerVertical="true"
-            android:layout_marginStart="-1dp"/>
+            android:layout_gravity="start"
+            android:layout_marginBottom="8dp"/>
 
+        <!-- Title (Centered below button) -->
         <TextView
             android:id="@+id/tvWelcomeStudent"
             android:layout_width="wrap_content"
@@ -36,9 +37,9 @@
             android:textSize="32sp"
             android:fontFamily="sans-serif-black"
             android:textColor="@color/text_dark"
-            android:layout_centerInParent="true"/>
+            android:layout_gravity="center_horizontal"/>
 
-    </RelativeLayout>
+    </LinearLayout>
 
     <TextView
         android:layout_width="wrap_content"
