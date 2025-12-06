@@ -132,4 +132,23 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         SQLiteDatabase db = this.getReadableDatabase();
         return db.rawQuery("SELECT * FROM " + TABLE_CLASSES, null);
     }
+    // --- INSTRUCTOR OPERATIONS ---
+    public boolean addInstructor(String name, String department, String loginId) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues values = new ContentValues();
+        values.put(KEY_NAME, name);
+        values.put(KEY_DEPT, department);
+        values.put(KEY_LOGIN_ID, loginId);
+
+        // Also create a login entry for them so they can actually log in
+        insertDefaultUser(db, loginId, "12345", "instructor"); // Default password
+
+        long result = db.insert(TABLE_INSTRUCTORS, null, values);
+        return result != -1;
+    }
+
+    public Cursor getAllInstructors() {
+        SQLiteDatabase db = this.getReadableDatabase();
+        return db.rawQuery("SELECT * FROM " + TABLE_INSTRUCTORS, null);
+    }
 }

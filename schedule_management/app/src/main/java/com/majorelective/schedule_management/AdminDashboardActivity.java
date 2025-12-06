@@ -36,13 +36,17 @@ public class AdminDashboardActivity extends AppCompatActivity {
             startActivity(intent);
         });
 
-        // Other buttons...
-        btnManageInstructors.setOnClickListener(v -> {
-            Toast.makeText(this, "Manage Instructors Clicked", Toast.LENGTH_SHORT).show();
+
+        // View Schedule Button
+        btnViewSchedule.setOnClickListener(v -> {
+            Intent intent = new Intent(AdminDashboardActivity.this, MasterScheduleActivity.class);
+            startActivity(intent);
         });
 
-        btnViewSchedule.setOnClickListener(v -> {
-            Toast.makeText(this, "View Schedule Clicked", Toast.LENGTH_SHORT).show();
+        // Manage Instructors Button
+        btnManageInstructors.setOnClickListener(v -> {
+            Intent intent = new Intent(AdminDashboardActivity.this, ManageInstructorsActivity.class);
+            startActivity(intent);
         });
 
         btnLogout.setOnClickListener(v -> {
