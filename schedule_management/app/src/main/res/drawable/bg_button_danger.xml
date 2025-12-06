@@ -2,8 +2,8 @@
 <shape xmlns:android="http://schemas.android.com/apk/res/android"
     android:shape="rectangle">
 
-    <!-- Purple color (Deep Purple) -->
-    <solid android:color="#673AB7"/>
+    <!-- Red color for danger/logout -->
+    <solid android:color="#D32F2F"/>
 
     <!-- High radius for Pill shape -->
     <corners android:radius="50dp"/>
