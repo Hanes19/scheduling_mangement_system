@@ -12,14 +12,12 @@
         android:orientation="vertical"
         android:padding="32dp">
 
-        <!-- Header -->
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
             android:layout_marginBottom="10dp">
 
-            <!-- Back Button (Top Left) -->
             <ImageButton
                 android:id="@+id/btnBack"
                 android:layout_width="20dp"
@@ -32,7 +30,6 @@
                 android:layout_gravity="start"
                 android:layout_marginBottom="8dp"/>
 
-            <!-- Title (Centered below button) -->
             <TextView
                 android:id="@+id/tvWelcomeStudent"
                 android:layout_width="wrap_content"
@@ -54,7 +51,6 @@
             android:textColor="#757575"
             android:layout_gravity="center_horizontal"/>
 
-        <!-- Subject Input -->
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -78,7 +74,6 @@
             android:inputType="textCapWords"
             android:layout_marginBottom="20dp"/>
 
-        <!-- Section Input -->
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -102,7 +97,6 @@
             android:inputType="textCapCharacters"
             android:layout_marginBottom="20dp"/>
 
-        <!-- Day Input -->
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -126,7 +120,6 @@
             android:inputType="textCapWords"
             android:layout_marginBottom="20dp"/>
 
-        <!-- Time Row -->
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -134,7 +127,6 @@
             android:baselineAligned="false"
             android:layout_marginBottom="20dp">
 
-            <!-- Start Time -->
             <LinearLayout
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
@@ -165,7 +157,6 @@
                     android:inputType="time"/>
             </LinearLayout>
 
-            <!-- End Time -->
             <LinearLayout
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
@@ -197,7 +188,6 @@
             </LinearLayout>
         </LinearLayout>
 
-        <!-- Room Input -->
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -221,7 +211,6 @@
             android:inputType="text"
             android:layout_marginBottom="20dp"/>
 
-        <!-- Instructor Input -->
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -231,21 +220,15 @@
             android:layout_marginStart="8dp"
             android:layout_marginBottom="6dp"/>
 
-        <EditText
-            android:id="@+id/etInstructor"
+        <Spinner
+            android:id="@+id/spinnerInstructor"
             android:layout_width="match_parent"
             android:layout_height="50dp"
             android:background="@drawable/bg_input_rounded"
             android:paddingStart="16dp"
             android:paddingEnd="16dp"
-            android:hint="Instructor Name"
-            android:textColor="#333333"
-            android:textColorHint="#999999"
-            android:textSize="16sp"
-            android:inputType="textPersonName"
             android:layout_marginBottom="40dp"/>
 
-        <!-- Action Button -->
         <Button
             android:id="@+id/btnSaveClass"
             android:layout_width="match_parent"

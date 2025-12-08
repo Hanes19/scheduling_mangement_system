@@ -1,5 +1,6 @@
 package com.majorelective.schedule_management;
 
+import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Color;
 import android.graphics.Typeface;
@@ -13,13 +14,14 @@ import android.widget.TextView;
 import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.cardview.widget.CardView;
-import androidx.core.content.ContextCompat;
 
 public class ManageInstructorsActivity extends AppCompatActivity {
 
     private DatabaseHelper dbHelper;
     private LinearLayout listContainer;
-    private EditText etName, etDept, etId;
+
+    // Define all input fields
+    private EditText etName, etDept, etSubject, etYear, etSection, etId, etPassword;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -28,37 +30,60 @@ public class ManageInstructorsActivity extends AppCompatActivity {
 
         dbHelper = new DatabaseHelper(this);
 
+        // 1. Bind ALL views (Make sure IDs match your XML)
         etName = findViewById(R.id.etInstName);
         etDept = findViewById(R.id.etInstDept);
+        etSubject = findViewById(R.id.etInstSubject);  // Added
+        etYear = findViewById(R.id.etInstYear);        // Added
+        etSection = findViewById(R.id.etInstSection);  // Added
         etId = findViewById(R.id.etInstID);
+        etPassword = findViewById(R.id.etInstPassword); // Added
+
         Button btnAdd = findViewById(R.id.btnAddInstructor);
         listContainer = findViewById(R.id.llInstructorListContainer);
 
-        findViewById(R.id.btnBack).setOnClickListener(v -> {
-            finish();
-        });
+        findViewById(R.id.btnBack).setOnClickListener(v -> finish());
 
+        // Load list initially
         loadInstructors();
 
+        // 2. Updated Add Button Logic
         btnAdd.setOnClickListener(v -> {
+            // Get text from ALL fields
             String name = etName.getText().toString();
             String dept = etDept.getText().toString();
+            String subject = etSubject.getText().toString();
+            String year = etYear.getText().toString();
+            String section = etSection.getText().toString();
             String id = etId.getText().toString();
+            String pass = etPassword.getText().toString();
 
-            if(name.isEmpty() || id.isEmpty()) {
-                Toast.makeText(this, "Name and Login ID are required", Toast.LENGTH_SHORT).show();
+            // Simple validation
+            if(name.isEmpty() || id.isEmpty() || pass.isEmpty()) {
+                Toast.makeText(this, "Name, ID, and Password are required", Toast.LENGTH_SHORT).show();
             } else {
-                boolean success = dbHelper.addInstructor(name, dept, id);
+                // 3. Call addInstructor with ALL 7 ARGUMENTS
+                boolean success = dbHelper.addInstructor(name, dept, subject, year, section, id, pass);
+
                 if(success) {
                     Toast.makeText(this, "Instructor Added!", Toast.LENGTH_SHORT).show();
-                    etName.setText(""); etDept.setText(""); etId.setText("");
-                    // Load the updated list
+                    // Clear fields
+                    etName.setText(""); etDept.setText(""); etSubject.setText("");
+                    etYear.setText(""); etSection.setText(""); etId.setText(""); etPassword.setText("");
+
+                    // Refresh the list
                     loadInstructors();
                 } else {
-                    Toast.makeText(this, "Error adding instructor", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(this, "Error adding instructor (ID might be taken)", Toast.LENGTH_SHORT).show();
                 }
             }
         });
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        loadInstructors(); // Refresh list when returning from Edit screen
     }
 
     private void loadInstructors() {
@@ -68,76 +93,63 @@ public class ManageInstructorsActivity extends AppCompatActivity {
         if (cursor == null) return;
 
         while (cursor.moveToNext()) {
-            String name = cursor.getString(1); // Index 1 is Name
-            String dept = cursor.getString(2); // Index 2 is Dept
-            String loginId = cursor.getString(3); // Index 3 is Login ID
+            // Retrieve data from cursor
+            // Note: Adjust indices if your table structure changes
+            String name = cursor.getString(1); // name
+            String dept = cursor.getString(2); // department
+            String loginId = cursor.getString(3); // login_id
 
-            // --- 1. Create CardView ---
+            // Check if column exists before accessing (safety check)
+            String subject = "";
+            if (cursor.getColumnCount() > 4) {
+                subject = cursor.getString(4);
+            }
+
+            // --- Create CardView Programmatically ---
             CardView card = new CardView(this);
             LinearLayout.LayoutParams cardParams = new LinearLayout.LayoutParams(
-                    LinearLayout.LayoutParams.MATCH_PARENT,
-                    LinearLayout.LayoutParams.WRAP_CONTENT
-            );
+                    LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
             cardParams.setMargins(dpToPx(4), 0, dpToPx(4), dpToPx(16));
             card.setLayoutParams(cardParams);
             card.setCardBackgroundColor(Color.WHITE);
             card.setRadius(dpToPx(15));
             card.setCardElevation(dpToPx(4));
 
-            // --- 2. Create Horizontal Container (Inside Card) ---
             LinearLayout horizontalLayout = new LinearLayout(this);
             horizontalLayout.setOrientation(LinearLayout.HORIZONTAL);
             horizontalLayout.setPadding(dpToPx(20), dpToPx(20), dpToPx(20), dpToPx(20));
             horizontalLayout.setGravity(Gravity.CENTER_VERTICAL);
             card.addView(horizontalLayout);
 
-            // --- 3. Create Info Layout (Left Side) ---
+            // --- Left Side: Info ---
             LinearLayout infoLayout = new LinearLayout(this);
             infoLayout.setOrientation(LinearLayout.VERTICAL);
-            LinearLayout.LayoutParams infoParams = new LinearLayout.LayoutParams(
-                    0, LinearLayout.LayoutParams.WRAP_CONTENT, 1.0f
-            );
-            infoLayout.setLayoutParams(infoParams);
+            infoLayout.setLayoutParams(new LinearLayout.LayoutParams(0, LinearLayout.LayoutParams.WRAP_CONTENT, 1.0f));
 
-            // Name TextView
             TextView tvName = new TextView(this);
             tvName.setText(name);
             tvName.setTextSize(18);
             tvName.setTextColor(Color.parseColor("#333333"));
             tvName.setTypeface(Typeface.create("sans-serif-black", Typeface.NORMAL));
-            LinearLayout.LayoutParams tvNameParams = new LinearLayout.LayoutParams(
-                    LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
-            tvNameParams.setMargins(0, 0, 0, dpToPx(4));
-            tvName.setLayoutParams(tvNameParams);
             infoLayout.addView(tvName);
 
-            // Dept TextView
-            TextView tvDept = new TextView(this);
-            tvDept.setText(dept);
-            tvDept.setTextSize(14);
-            tvDept.setTextColor(Color.parseColor("#666666"));
-            LinearLayout.LayoutParams tvDeptParams = new LinearLayout.LayoutParams(
-                    LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
-            tvDeptParams.setMargins(0, 0, 0, dpToPx(2));
-            tvDept.setLayoutParams(tvDeptParams);
-            infoLayout.addView(tvDept);
+            TextView tvDetails = new TextView(this);
+            tvDetails.setText(dept + (subject.isEmpty() ? "" : " • " + subject));
+            tvDetails.setTextSize(14);
+            tvDetails.setTextColor(Color.parseColor("#666666"));
+            infoLayout.addView(tvDetails);
 
-            // ID TextView
             TextView tvId = new TextView(this);
             tvId.setText("ID: " + loginId);
             tvId.setTextSize(12);
-            // Use the purple color resource if possible, or parse hex
             tvId.setTextColor(Color.parseColor("#A685FA"));
             infoLayout.addView(tvId);
 
             horizontalLayout.addView(infoLayout);
 
-            // --- 4. Create Actions Layout (Right Side) ---
+            // --- Right Side: Actions (Edit/Delete) ---
             LinearLayout actionsLayout = new LinearLayout(this);
             actionsLayout.setOrientation(LinearLayout.VERTICAL);
-            actionsLayout.setLayoutParams(new LinearLayout.LayoutParams(
-                    LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT
-            ));
 
             // Edit Button
             Button btnEdit = new Button(this);
@@ -149,8 +161,13 @@ public class ManageInstructorsActivity extends AppCompatActivity {
             LinearLayout.LayoutParams btnEditParams = new LinearLayout.LayoutParams(dpToPx(80), dpToPx(35));
             btnEditParams.setMargins(0, 0, 0, dpToPx(8));
             btnEdit.setLayoutParams(btnEditParams);
-            // Remove state list animator to match XML style
             btnEdit.setStateListAnimator(null);
+
+            btnEdit.setOnClickListener(v -> {
+                Intent intent = new Intent(ManageInstructorsActivity.this, EditInstructorActivity.class);
+                intent.putExtra("INSTRUCTOR_ID", loginId);
+                startActivity(intent);
+            });
             actionsLayout.addView(btnEdit);
 
             // Delete Button
@@ -160,24 +177,26 @@ public class ManageInstructorsActivity extends AppCompatActivity {
             btnDelete.setAllCaps(false);
             btnDelete.setTextColor(Color.WHITE);
             btnDelete.setBackgroundResource(R.drawable.btn_rounded_red);
-            LinearLayout.LayoutParams btnDeleteParams = new LinearLayout.LayoutParams(dpToPx(80), dpToPx(35));
-            btnDelete.setLayoutParams(btnDeleteParams);
+            btnDelete.setLayoutParams(new LinearLayout.LayoutParams(dpToPx(80), dpToPx(35)));
             btnDelete.setStateListAnimator(null);
+
+            btnDelete.setOnClickListener(v -> {
+                boolean deleted = dbHelper.deleteInstructor(loginId);
+                if (deleted) {
+                    Toast.makeText(this, "Instructor deleted", Toast.LENGTH_SHORT).show();
+                    loadInstructors(); // Reload list
+                } else {
+                    Toast.makeText(this, "Error deleting", Toast.LENGTH_SHORT).show();
+                }
+            });
             actionsLayout.addView(btnDelete);
 
             horizontalLayout.addView(actionsLayout);
-
-            // Add the constructed card to the main list container
             listContainer.addView(card);
         }
     }
 
-    // Helper to convert dp to pixels
     private int dpToPx(int dp) {
-        return (int) TypedValue.applyDimension(
-                TypedValue.COMPLEX_UNIT_DIP,
-                dp,
-                getResources().getDisplayMetrics()
-        );
+        return (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, dp, getResources().getDisplayMetrics());
     }
 }
