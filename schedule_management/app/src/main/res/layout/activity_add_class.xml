@@ -143,18 +143,13 @@
                     android:layout_marginStart="8dp"
                     android:layout_marginBottom="6dp"/>
 
-                <EditText
-                    android:id="@+id/etStartTime"
+                <Spinner
+                    android:id="@+id/spinnerStartTime"
                     android:layout_width="match_parent"
                     android:layout_height="50dp"
                     android:background="@drawable/bg_input_rounded"
                     android:paddingStart="16dp"
-                    android:paddingEnd="16dp"
-                    android:hint="08:00"
-                    android:textColor="#333333"
-                    android:textColorHint="#999999"
-                    android:textSize="16sp"
-                    android:inputType="time"/>
+                    android:paddingEnd="16dp"/>
             </LinearLayout>
 
             <LinearLayout
@@ -173,21 +168,15 @@
                     android:layout_marginStart="8dp"
                     android:layout_marginBottom="6dp"/>
 
-                <EditText
-                    android:id="@+id/etEndTime"
+                <Spinner
+                    android:id="@+id/spinnerEndTime"
                     android:layout_width="match_parent"
                     android:layout_height="50dp"
                     android:background="@drawable/bg_input_rounded"
                     android:paddingStart="16dp"
-                    android:paddingEnd="16dp"
-                    android:hint="09:30"
-                    android:textColor="#333333"
-                    android:textColorHint="#999999"
-                    android:textSize="16sp"
-                    android:inputType="time"/>
+                    android:paddingEnd="16dp"/>
             </LinearLayout>
         </LinearLayout>
-
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

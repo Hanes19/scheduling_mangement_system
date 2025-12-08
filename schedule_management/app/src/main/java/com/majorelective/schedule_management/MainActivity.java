@@ -47,6 +47,7 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
+
     private void performLoginCheck(String id, String password) {
         String role = dbHelper.checkLogin(id, password);
 
@@ -56,11 +57,12 @@ public class MainActivity extends AppCompatActivity {
             if (role.equals("admin")) {
                 startActivity(new Intent(MainActivity.this, AdminDashboardActivity.class));
             } else if (role.equals("student")) {
-                startActivity(new Intent(MainActivity.this, StudentDashboardActivity.class));
+                Intent intent = new Intent(MainActivity.this, StudentDashboardActivity.class);
+                intent.putExtra("USERNAME", id);
+                startActivity(intent);
             } else if (role.equals("instructor")) {
-                // CHANGED: Create Intent explicitly to pass data
                 Intent intent = new Intent(MainActivity.this, InstructorDashboardActivity.class);
-                intent.putExtra("USERNAME", id); // Pass the login ID (e.g. teacher_01)
+                intent.putExtra("USERNAME", id);
                 startActivity(intent);
             }
         } else {

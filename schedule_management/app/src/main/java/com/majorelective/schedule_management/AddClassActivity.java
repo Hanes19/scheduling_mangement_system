@@ -8,26 +8,23 @@ import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
-
 import java.util.ArrayList;
+import java.util.List;
 
 public class AddClassActivity extends AppCompatActivity {
 
     private DatabaseHelper dbHelper;
+    // Changed to Spinner
+    private Spinner spinnerStartTime, spinnerEndTime;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_class);
 
-        // Initialize DB Helper
         dbHelper = new DatabaseHelper(this);
 
-        // Make Back Button Work
-        findViewById(R.id.btnBack).setOnClickListener(v -> {
-            finish();
-        });
-
+        findViewById(R.id.btnBack).setOnClickListener(v -> finish());
         setupUI();
     }
 
@@ -35,69 +32,101 @@ public class AddClassActivity extends AppCompatActivity {
         EditText etSubject = findViewById(R.id.etSubject);
         EditText etSection = findViewById(R.id.etSection);
         EditText etDay = findViewById(R.id.etDay);
-        EditText etStartTime = findViewById(R.id.etStartTime);
-        EditText etEndTime = findViewById(R.id.etEndTime);
         EditText etRoom = findViewById(R.id.etRoom);
-
-        // Changed from EditText to Spinner
         Spinner spinnerInstructor = findViewById(R.id.spinnerInstructor);
+
+        // Bind the new Time Spinners
+        spinnerStartTime = findViewById(R.id.spinnerStartTime);
+        spinnerEndTime = findViewById(R.id.spinnerEndTime);
 
         Button btnSave = findViewById(R.id.btnSaveClass);
 
-        // --- POPULATE INSTRUCTOR SPINNER ---
+        // --- 1. POPULATE TIME SPINNERS (24 Hour Format) ---
+        List<String> timeSlots = generateTimeSlots();
+        ArrayAdapter<String> timeAdapter = new ArrayAdapter<>(this,
+                android.R.layout.simple_spinner_item, timeSlots);
+        timeAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+
+        spinnerStartTime.setAdapter(timeAdapter);
+        spinnerEndTime.setAdapter(timeAdapter);
+        // Set a default "End Time" slightly ahead of start just for UX (optional)
+        spinnerEndTime.setSelection(2);
+
+        // --- 2. POPULATE INSTRUCTOR SPINNER ---
         ArrayList<String> instructorsList = new ArrayList<>();
         Cursor cursor = dbHelper.getAllInstructors();
-
-        if (cursor != null) {
-            if (cursor.moveToFirst()) {
-                do {
-                    // Index 1 is KEY_NAME based on your DatabaseHelper structure
-                    String name = cursor.getString(1);
-                    instructorsList.add(name);
-                } while (cursor.moveToNext());
-            }
+        if (cursor != null && cursor.moveToFirst()) {
+            do {
+                instructorsList.add(cursor.getString(1)); // KEY_NAME
+            } while (cursor.moveToNext());
             cursor.close();
         }
+        if (instructorsList.isEmpty()) instructorsList.add("No instructors found");
 
-        if (instructorsList.isEmpty()) {
-            instructorsList.add("No instructors found");
-        }
-
-        ArrayAdapter<String> adapter = new ArrayAdapter<>(this,
+        ArrayAdapter<String> instAdapter = new ArrayAdapter<>(this,
                 android.R.layout.simple_spinner_item, instructorsList);
-        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        spinnerInstructor.setAdapter(adapter);
-        // -----------------------------------
+        instAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spinnerInstructor.setAdapter(instAdapter);
 
+        // --- 3. SAVE BUTTON LOGIC ---
         btnSave.setOnClickListener(v -> {
             String subject = etSubject.getText().toString();
             String section = etSection.getText().toString();
             String day = etDay.getText().toString();
-            String start = etStartTime.getText().toString();
-            String end = etEndTime.getText().toString();
             String room = etRoom.getText().toString();
 
-            // Get selected instructor from Spinner
+            // Get selected times from spinners
+            String start = spinnerStartTime.getSelectedItem().toString();
+            String end = spinnerEndTime.getSelectedItem().toString();
+
             String instructor = "";
             if (spinnerInstructor.getSelectedItem() != null) {
                 instructor = spinnerInstructor.getSelectedItem().toString();
             }
 
-            if (subject.isEmpty() || section.isEmpty() || day.isEmpty()) {
+            // Basic Empty Validation
+            if (subject.isEmpty() || section.isEmpty() || day.isEmpty() || room.isEmpty()) {
                 Toast.makeText(this, "Please fill in all required fields", Toast.LENGTH_SHORT).show();
-            } else if (instructor.equals("No instructors found") || instructor.isEmpty()) {
-                Toast.makeText(this, "Please register an instructor first", Toast.LENGTH_SHORT).show();
-            } else {
-                // Save to Database
-                boolean isInserted = dbHelper.addClass(subject, section, day, start, end, room, instructor);
+                return;
+            }
 
+            // Logic: End time must be after Start time
+            if (convertTimeToInt(start) >= convertTimeToInt(end)) {
+                Toast.makeText(this, "End time must be after Start time", Toast.LENGTH_SHORT).show();
+                return;
+            }
+
+            // --- 4. CHECK FOR OVERLAP ---
+            if (dbHelper.isScheduleConflict(day, start, end, room)) {
+                Toast.makeText(this, "Conflict detected! The room is already booked for this time.", Toast.LENGTH_LONG).show();
+            } else {
+                // No conflict, proceed to save
+                boolean isInserted = dbHelper.addClass(subject, section, day, start, end, room, instructor);
                 if (isInserted) {
                     Toast.makeText(this, "Class Saved Successfully!", Toast.LENGTH_SHORT).show();
-                    finish(); // Go back to Dashboard
+                    finish();
                 } else {
                     Toast.makeText(this, "Error Saving Class", Toast.LENGTH_SHORT).show();
                 }
             }
         });
+    }
+
+    // Helper to generate 24h time slots (07:00 to 22:00)
+    private List<String> generateTimeSlots() {
+        List<String> slots = new ArrayList<>();
+        for (int hour = 7; hour <= 22; hour++) {
+            slots.add(String.format("%02d:00", hour));
+            if (hour != 22) { // Don't add 22:30 if 22:00 is the limit
+                slots.add(String.format("%02d:30", hour));
+            }
+        }
+        return slots;
+    }
+
+    // Helper for validation comparison
+    private int convertTimeToInt(String time) {
+        String[] parts = time.split(":");
+        return (Integer.parseInt(parts[0]) * 60) + Integer.parseInt(parts[1]);
     }
 }

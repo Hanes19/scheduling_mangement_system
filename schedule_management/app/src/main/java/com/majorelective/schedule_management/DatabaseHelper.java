@@ -10,7 +10,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
     private static final String DATABASE_NAME = "ScheduleManager.db";
     // INCREMENTED VERSION TO 4 TO ADD NEW INSTRUCTOR FIELDS
-    private static final int DATABASE_VERSION = 4;
+    private static final int DATABASE_VERSION = 5;
 
     // Table Names
     private static final String TABLE_USERS = "users";
@@ -298,5 +298,74 @@ public class DatabaseHelper extends SQLiteOpenHelper {
             return name;
         }
         return null;
+    }
+    // [NEW] Get Student's Section by their Email/ID
+    public String getStudentSection(String email) {
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor = db.query(TABLE_STUDENTS, new String[]{KEY_STUDENT_SECTION},
+                KEY_STUDENT_EMAIL + "=?", new String[]{email}, null, null, null);
+
+        if (cursor != null) {
+            if (cursor.moveToFirst()) {
+                String section = cursor.getString(0);
+                cursor.close();
+                return section;
+            }
+            cursor.close();
+        }
+        return null; // Return null if student not found
+    }
+
+    // [NEW] Get Classes only for a specific Section
+    public Cursor getClassesBySection(String section) {
+        SQLiteDatabase db = this.getReadableDatabase();
+        // Filters the classes table where the 'section' column matches the student's section
+        return db.rawQuery("SELECT * FROM " + TABLE_CLASSES + " WHERE " + KEY_SECTION + " = ?", new String[]{section});
+    }
+
+    // Check for scheduling conflicts (Overlaps)
+    public boolean isScheduleConflict(String day, String startTime, String endTime, String room) {
+        SQLiteDatabase db = this.getReadableDatabase();
+
+        // Select all classes happening on the same day in the same room
+        Cursor cursor = db.rawQuery("SELECT " + KEY_START_TIME + ", " + KEY_END_TIME +
+                        " FROM " + TABLE_CLASSES +
+                        " WHERE " + KEY_DAY + "=? AND " + KEY_ROOM + "=?",
+                new String[]{day, room});
+
+        int newStart = convertTimeToInt(startTime);
+        int newEnd = convertTimeToInt(endTime);
+
+        if (cursor.moveToFirst()) {
+            do {
+                String dbStartStr = cursor.getString(0);
+                String dbEndStr = cursor.getString(1);
+
+                int dbStart = convertTimeToInt(dbStartStr);
+                int dbEnd = convertTimeToInt(dbEndStr);
+
+                // LOGIC: Check for Overlap
+                // (NewStart < ExistingEnd) AND (NewEnd > ExistingStart)
+                if (newStart < dbEnd && newEnd > dbStart) {
+                    cursor.close();
+                    return true; // Conflict found!
+                }
+            } while (cursor.moveToNext());
+        }
+
+        cursor.close();
+        return false; // No conflict
+    }
+
+    // Helper to convert "HH:mm" string to minutes (e.g., "01:30" -> 90)
+    private int convertTimeToInt(String time) {
+        try {
+            String[] parts = time.split(":");
+            int hours = Integer.parseInt(parts[0]);
+            int minutes = Integer.parseInt(parts[1]);
+            return (hours * 60) + minutes;
+        } catch (Exception e) {
+            return 0;
+        }
     }
 }
