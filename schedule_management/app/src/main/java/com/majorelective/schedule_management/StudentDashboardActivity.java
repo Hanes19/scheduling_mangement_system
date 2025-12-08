@@ -16,21 +16,24 @@ public class StudentDashboardActivity extends AppCompatActivity {
     private LinearLayout container;
     private Button btnLogout;
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_student_dashboard); // Links to your XML
+        setContentView(R.layout.activity_student_dashboard);
 
         dbHelper = new DatabaseHelper(this);
         container = findViewById(R.id.llClassContainer);
-        btnLogout = findViewById(R.id.btnLogout);
 
-        // Load the classes
+        findViewById(R.id.btnBack).setOnClickListener(v -> {
+            finish();
+        });
+
+
         loadStudentSchedule();
 
-        // Handle Logout
         btnLogout.setOnClickListener(v -> {
-            finish(); // Closes dashboard and returns to Login
+            finish();
         });
     }
 

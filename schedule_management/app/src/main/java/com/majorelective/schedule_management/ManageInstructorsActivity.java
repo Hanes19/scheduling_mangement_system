@@ -22,14 +22,21 @@ public class ManageInstructorsActivity extends AppCompatActivity {
 
         dbHelper = new DatabaseHelper(this);
 
-        // Link UI
         etName = findViewById(R.id.etInstName);
         etDept = findViewById(R.id.etInstDept);
         etId = findViewById(R.id.etInstID);
         Button btnAdd = findViewById(R.id.btnAddInstructor);
         listContainer = findViewById(R.id.llInstructorListContainer);
 
+
+        findViewById(R.id.btnBack).setOnClickListener(v -> {
+            finish();
+        });
+
+
         loadInstructors();
+
+
 
         btnAdd.setOnClickListener(v -> {
             String name = etName.getText().toString();

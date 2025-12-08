@@ -205,4 +205,25 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         SQLiteDatabase db = this.getReadableDatabase();
         return db.rawQuery("SELECT * FROM " + TABLE_INSTRUCTORS, null);
     }
+
+    public String getInstructorNameById(String loginId) {
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor = db.query(TABLE_INSTRUCTORS, new String[]{KEY_NAME},
+                KEY_LOGIN_ID + "=?", new String[]{loginId}, null, null, null);
+
+        if (cursor != null && cursor.moveToFirst()) {
+            String name = cursor.getString(0);
+            cursor.close();
+            return name;
+        }
+        return null;
+    }
+
+    // 2. Get classes where the instructor_name matches
+    public Cursor getClassesByInstructor(String instructorName) {
+        SQLiteDatabase db = this.getReadableDatabase();
+        return db.rawQuery("SELECT * FROM " + TABLE_CLASSES +
+                        " WHERE " + KEY_INSTRUCTOR_NAME + " = ?",
+                new String[]{instructorName});
+    }
 }

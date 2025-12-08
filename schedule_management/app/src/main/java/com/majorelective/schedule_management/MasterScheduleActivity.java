@@ -21,64 +21,96 @@ public class MasterScheduleActivity extends AppCompatActivity {
         dbHelper = new DatabaseHelper(this);
         container = findViewById(R.id.llMasterScheduleContainer);
 
+
+        findViewById(R.id.btnBack).setOnClickListener(v -> {
+            finish();
+        });
+
+
         loadSchedule();
     }
 
     private void loadSchedule() {
+        // 1. CLEAR existing hardcoded XML views so we only see DB items
+        container.removeAllViews();
+
         Cursor cursor = dbHelper.getAllClasses();
 
-        if (cursor.getCount() == 0) {
+        // 2. Handle empty state
+        if (cursor == null || cursor.getCount() == 0) {
             TextView emptyView = new TextView(this);
             emptyView.setText("No classes scheduled yet.");
-            emptyView.setPadding(20, 20, 20, 20);
+            emptyView.setTextSize(16);
+            emptyView.setPadding(32, 32, 32, 32);
+            emptyView.setTextColor(Color.GRAY);
             container.addView(emptyView);
             return;
         }
 
+        // 3. Loop through DB results
         while (cursor.moveToNext()) {
-            // Get data from database columns (indices match your DB helper)
-            String subject = cursor.getString(1);
-            String section = cursor.getString(2);
-            String day = cursor.getString(3);
-            String time = cursor.getString(4) + " - " + cursor.getString(5);
-            String room = cursor.getString(6);
-            String instructor = cursor.getString(7);
+            // Retrieve data (indices based on your DatabaseHelper columns)
+            String subject = cursor.getString(1);     // KEY_SUBJECT
+            String section = cursor.getString(2);     // KEY_SECTION
+            String day = cursor.getString(3);         // KEY_DAY
+            String start = cursor.getString(4);       // KEY_START_TIME
+            String end = cursor.getString(5);         // KEY_END_TIME
+            String room = cursor.getString(6);        // KEY_ROOM
+            String instructor = cursor.getString(7);  // KEY_INSTRUCTOR_NAME
 
-            // Create a CardView programmatically to display the class
+            // --- BUILD THE CARD PROGRAMMATICALLY ---
+
             CardView card = new CardView(this);
             LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
                     LinearLayout.LayoutParams.MATCH_PARENT,
                     LinearLayout.LayoutParams.WRAP_CONTENT
             );
-            params.setMargins(0, 0, 0, 24);
+            params.setMargins(10, 10, 10, 24); // Add spacing between cards
             card.setLayoutParams(params);
             card.setCardBackgroundColor(Color.WHITE);
-            card.setRadius(16f);
-            card.setContentPadding(32, 32, 32, 32);
+            card.setRadius(20f);
             card.setCardElevation(8f);
+            card.setContentPadding(40, 40, 40, 40);
 
-            // Content Layout inside Card
-            LinearLayout contentLayout = new LinearLayout(this);
-            contentLayout.setOrientation(LinearLayout.VERTICAL);
+            // Vertical Layout for text inside the card
+            LinearLayout textLayout = new LinearLayout(this);
+            textLayout.setOrientation(LinearLayout.VERTICAL);
 
-            // Add Text Views
-            contentLayout.addView(createTextView(subject + " (" + section + ")", 18, true));
-            contentLayout.addView(createTextView(day + " | " + time, 14, false));
-            contentLayout.addView(createTextView("Room: " + room, 14, false));
-            contentLayout.addView(createTextView("Instructor: " + instructor, 14, false));
+            // Subject (Header)
+            TextView tvSubject = new TextView(this);
+            tvSubject.setText(subject);
+            tvSubject.setTextSize(20);
+            tvSubject.setTextColor(Color.parseColor("#333333"));
+            tvSubject.setTypeface(null, android.graphics.Typeface.BOLD);
+            textLayout.addView(tvSubject);
 
-            card.addView(contentLayout);
+            // Section & Room (Subtitle)
+            TextView tvDetails = new TextView(this);
+            tvDetails.setText("Section " + section + " | " + room);
+            tvDetails.setTextSize(14);
+            tvDetails.setTextColor(Color.parseColor("#666666"));
+            tvDetails.setPadding(0, 8, 0, 8);
+            textLayout.addView(tvDetails);
+
+            // Instructor
+            TextView tvInstructor = new TextView(this);
+            tvInstructor.setText("Instructor: " + instructor);
+            tvInstructor.setTextSize(14);
+            tvInstructor.setTextColor(Color.parseColor("#666666"));
+            textLayout.addView(tvInstructor);
+
+            // Time (Highlighted)
+            TextView tvTime = new TextView(this);
+            tvTime.setText(day + " " + start + " - " + end);
+            tvTime.setTextSize(14);
+            tvTime.setTextColor(Color.parseColor("#A685FA")); // Purple accent
+            tvTime.setTypeface(null, android.graphics.Typeface.ITALIC);
+            tvTime.setPadding(0, 16, 0, 0);
+            textLayout.addView(tvTime);
+
+            // Add text layout to card, and card to main container
+            card.addView(textLayout);
             container.addView(card);
         }
-    }
-
-    private TextView createTextView(String text, float size, boolean isBold) {
-        TextView tv = new TextView(this);
-        tv.setText(text);
-        tv.setTextSize(size);
-        tv.setTextColor(Color.DKGRAY);
-        if (isBold) tv.setTypeface(null, android.graphics.Typeface.BOLD);
-        tv.setPadding(0, 0, 0, 8);
-        return tv;
     }
 }

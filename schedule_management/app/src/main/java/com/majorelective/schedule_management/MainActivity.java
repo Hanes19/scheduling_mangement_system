@@ -58,7 +58,10 @@ public class MainActivity extends AppCompatActivity {
             } else if (role.equals("student")) {
                 startActivity(new Intent(MainActivity.this, StudentDashboardActivity.class));
             } else if (role.equals("instructor")) {
-                startActivity(new Intent(MainActivity.this, InstructorDashboardActivity.class));
+                // CHANGED: Create Intent explicitly to pass data
+                Intent intent = new Intent(MainActivity.this, InstructorDashboardActivity.class);
+                intent.putExtra("USERNAME", id); // Pass the login ID (e.g. teacher_01)
+                startActivity(intent);
             }
         } else {
             Toast.makeText(MainActivity.this, "Login Failed: Invalid Credentials", Toast.LENGTH_SHORT).show();

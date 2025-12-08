@@ -18,6 +18,13 @@ public class AddClassActivity extends AppCompatActivity {
         // Initialize DB Helper
         dbHelper = new DatabaseHelper(this);
 
+        // --- ADD THIS BLOCK HERE ---
+        // Make Back Button Work
+        findViewById(R.id.btnBack).setOnClickListener(v -> {
+            finish();
+        });
+        // ---------------------------
+
         setupUI();
     }
 
