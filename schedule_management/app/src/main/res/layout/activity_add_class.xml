@@ -97,6 +97,26 @@
             android:inputType="textCapCharacters"
             android:layout_marginBottom="20dp"/>
 
+        <!-- UPDATED: Student Year is now a Spinner (Dropdown) -->
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Student Year"
+            android:textColor="#666666"
+            android:textSize="14sp"
+            android:layout_marginStart="8dp"
+            android:layout_marginBottom="6dp"/>
+
+        <Spinner
+            android:id="@+id/spinnerStudentYear"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:background="@drawable/bg_input_rounded"
+            android:paddingStart="16dp"
+            android:paddingEnd="16dp"
+            android:layout_marginBottom="20dp"/>
+        <!-- End of Updated Field -->
+
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
