@@ -26,11 +26,17 @@ public class MainActivity extends AppCompatActivity {
 
         dbHelper = new DatabaseHelper(this);
 
+        // Bind Views
         etEmail = findViewById(R.id.etEmail);
         etPassword = findViewById(R.id.etPassword);
         btnLogin = findViewById(R.id.btnLogin);
-        tvRegister = findViewById(R.id.tvGoToRegister); // Bind the ID from activity_login.xml
+        tvRegister = findViewById(R.id.tvGoToRegister);
 
+        // [NEW] Bind the Forgot Password Text
+        // We declare it locally here since we only use it in this method
+        TextView tvForgotPassword = findViewById(R.id.tvForgotPassword);
+
+        // Login Button Logic
         btnLogin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -40,9 +46,15 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        // Add Listener for Register Link
+        // Register Link Logic
         tvRegister.setOnClickListener(v -> {
             Intent intent = new Intent(MainActivity.this, RegisterActivity.class);
+            startActivity(intent);
+        });
+
+        // [NEW] Forgot Password Link Logic
+        tvForgotPassword.setOnClickListener(v -> {
+            Intent intent = new Intent(MainActivity.this, ForgotPassActivity.class);
             startActivity(intent);
         });
     }

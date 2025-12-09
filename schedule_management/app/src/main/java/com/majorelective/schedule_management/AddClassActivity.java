@@ -9,13 +9,13 @@ import android.widget.Spinner;
 import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 public class AddClassActivity extends AppCompatActivity {
 
     private DatabaseHelper dbHelper;
-    // Changed to Spinner
-    private Spinner spinnerStartTime, spinnerEndTime;
+    private Spinner spinnerStartTime, spinnerEndTime, spinnerStudentYear; // Added spinnerStudentYear
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,13 +35,15 @@ public class AddClassActivity extends AppCompatActivity {
         EditText etRoom = findViewById(R.id.etRoom);
         Spinner spinnerInstructor = findViewById(R.id.spinnerInstructor);
 
-        // Bind the new Time Spinners
+        // [CHANGED] Initialize Student Year Spinner
+        spinnerStudentYear = findViewById(R.id.spinnerStudentYear);
+
         spinnerStartTime = findViewById(R.id.spinnerStartTime);
         spinnerEndTime = findViewById(R.id.spinnerEndTime);
 
         Button btnSave = findViewById(R.id.btnSaveClass);
 
-        // --- 1. POPULATE TIME SPINNERS (24 Hour Format) ---
+        // 1. Setup Time Spinners
         List<String> timeSlots = generateTimeSlots();
         ArrayAdapter<String> timeAdapter = new ArrayAdapter<>(this,
                 android.R.layout.simple_spinner_item, timeSlots);
@@ -49,10 +51,16 @@ public class AddClassActivity extends AppCompatActivity {
 
         spinnerStartTime.setAdapter(timeAdapter);
         spinnerEndTime.setAdapter(timeAdapter);
-        // Set a default "End Time" slightly ahead of start just for UX (optional)
         spinnerEndTime.setSelection(2);
 
-        // --- 2. POPULATE INSTRUCTOR SPINNER ---
+        // [CHANGED] 2. Setup Year Spinner (1 to 4)
+        List<String> years = Arrays.asList("1", "2", "3", "4");
+        ArrayAdapter<String> yearAdapter = new ArrayAdapter<>(this,
+                android.R.layout.simple_spinner_item, years);
+        yearAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spinnerStudentYear.setAdapter(yearAdapter);
+
+        // 3. Setup Instructor Spinner
         ArrayList<String> instructorsList = new ArrayList<>();
         Cursor cursor = dbHelper.getAllInstructors();
         if (cursor != null && cursor.moveToFirst()) {
@@ -68,14 +76,19 @@ public class AddClassActivity extends AppCompatActivity {
         instAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinnerInstructor.setAdapter(instAdapter);
 
-        // --- 3. SAVE BUTTON LOGIC ---
+        // 4. Save Button Logic
         btnSave.setOnClickListener(v -> {
             String subject = etSubject.getText().toString();
             String section = etSection.getText().toString();
             String day = etDay.getText().toString();
             String room = etRoom.getText().toString();
 
-            // Get selected times from spinners
+            // [CHANGED] Get Year
+            String year = "";
+            if(spinnerStudentYear.getSelectedItem() != null) {
+                year = spinnerStudentYear.getSelectedItem().toString();
+            }
+
             String start = spinnerStartTime.getSelectedItem().toString();
             String end = spinnerEndTime.getSelectedItem().toString();
 
@@ -84,24 +97,21 @@ public class AddClassActivity extends AppCompatActivity {
                 instructor = spinnerInstructor.getSelectedItem().toString();
             }
 
-            // Basic Empty Validation
             if (subject.isEmpty() || section.isEmpty() || day.isEmpty() || room.isEmpty()) {
                 Toast.makeText(this, "Please fill in all required fields", Toast.LENGTH_SHORT).show();
                 return;
             }
 
-            // Logic: End time must be after Start time
             if (convertTimeToInt(start) >= convertTimeToInt(end)) {
                 Toast.makeText(this, "End time must be after Start time", Toast.LENGTH_SHORT).show();
                 return;
             }
 
-            // --- 4. CHECK FOR OVERLAP ---
             if (dbHelper.isScheduleConflict(day, start, end, room)) {
                 Toast.makeText(this, "Conflict detected! The room is already booked for this time.", Toast.LENGTH_LONG).show();
             } else {
-                // No conflict, proceed to save
-                boolean isInserted = dbHelper.addClass(subject, section, day, start, end, room, instructor);
+                // [CHANGED] Pass 'year' to addClass
+                boolean isInserted = dbHelper.addClass(subject, section, year, day, start, end, room, instructor);
                 if (isInserted) {
                     Toast.makeText(this, "Class Saved Successfully!", Toast.LENGTH_SHORT).show();
                     finish();
@@ -112,19 +122,17 @@ public class AddClassActivity extends AppCompatActivity {
         });
     }
 
-    // Helper to generate 24h time slots (07:00 to 22:00)
     private List<String> generateTimeSlots() {
         List<String> slots = new ArrayList<>();
         for (int hour = 7; hour <= 22; hour++) {
             slots.add(String.format("%02d:00", hour));
-            if (hour != 22) { // Don't add 22:30 if 22:00 is the limit
+            if (hour != 22) {
                 slots.add(String.format("%02d:30", hour));
             }
         }
         return slots;
     }
 
-    // Helper for validation comparison
     private int convertTimeToInt(String time) {
         String[] parts = time.split(":");
         return (Integer.parseInt(parts[0]) * 60) + Integer.parseInt(parts[1]);

@@ -4,10 +4,8 @@ import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Color;
 import android.os.Bundle;
-import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast; // Import added
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.cardview.widget.CardView;
 
@@ -15,8 +13,7 @@ public class StudentDashboardActivity extends AppCompatActivity {
 
     private DatabaseHelper dbHelper;
     private LinearLayout container;
-    private Button btnLogout;
-    private String studentId; // To store logged-in ID
+    private String studentId;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -24,50 +21,47 @@ public class StudentDashboardActivity extends AppCompatActivity {
         setContentView(R.layout.activity_student_dashboard);
 
         dbHelper = new DatabaseHelper(this);
-        container = findViewById(R.id.llClassContainer); // Ensure you have this ID in XML or remove this line if not used
-
-        // [CHANGED] Get the User ID passed from MainActivity
+        container = findViewById(R.id.llClassContainer);
         studentId = getIntent().getStringExtra("USERNAME");
 
-        findViewById(R.id.btnBack).setOnClickListener(v -> {
-            finish();
-        });
+        findViewById(R.id.btnBack).setOnClickListener(v -> finish());
 
         loadStudentSchedule();
-
-        // Optional: Logout button logic if the button exists in your XML
-        // btnLogout.setOnClickListener(v -> finish());
     }
 
     private void loadStudentSchedule() {
-        container.removeAllViews(); // Clear previous views
+        container.removeAllViews();
 
-        // 1. Get Student's Section first
+        // 1. Get Student's Section
         String section = dbHelper.getStudentSection(studentId);
 
-        if (section == null) {
+        // [CHANGED] 2. Get Student's Year
+        String year = dbHelper.getStudentYear(studentId);
+
+        if (section == null || year == null) {
             showEmptyMessage("Error: Could not find student record.");
             return;
         }
 
-        // 2. Fetch classes ONLY for that section
-        Cursor cursor = dbHelper.getClassesBySection(section);
+        // [CHANGED] 3. Fetch classes using both Section and Year
+        Cursor cursor = dbHelper.getClassesForStudent(section, year);
 
         if (cursor == null || cursor.getCount() == 0) {
-            showEmptyMessage("No classes found for Section " + section);
+            showEmptyMessage("No classes found for Year " + year + ", Section " + section);
             return;
         }
 
         while (cursor.moveToNext()) {
-            // Get data from database
+            // Note: Update index if column order changed.
+            // In onCreate: ID(0), SUBJECT(1), SECTION(2), YEAR(3), DAY(4), START(5), END(6), ROOM(7), INST(8)
             String subject = cursor.getString(1);
-            String classSection = cursor.getString(2); // Should match student section
-            String day = cursor.getString(3);
-            String time = cursor.getString(4) + " - " + cursor.getString(5);
-            String room = cursor.getString(6);
-            String instructor = cursor.getString(7);
+            String classSection = cursor.getString(2);
+            // Index 3 is year, we don't necessarily need to display it since it matches
+            String day = cursor.getString(4);
+            String time = cursor.getString(5) + " - " + cursor.getString(6);
+            String room = cursor.getString(7);
+            String instructor = cursor.getString(8);
 
-            // Create CardView
             CardView card = new CardView(this);
             LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
                     LinearLayout.LayoutParams.MATCH_PARENT,
@@ -80,11 +74,9 @@ public class StudentDashboardActivity extends AppCompatActivity {
             card.setContentPadding(32, 32, 32, 32);
             card.setCardElevation(8f);
 
-            // Create Content Layout
             LinearLayout contentLayout = new LinearLayout(this);
             contentLayout.setOrientation(LinearLayout.VERTICAL);
 
-            // Add details
             contentLayout.addView(createTextView(subject, 18, true, Color.parseColor("#333333")));
             contentLayout.addView(createTextView("Section: " + classSection, 14, false, Color.DKGRAY));
             contentLayout.addView(createTextView(day + " | " + time, 14, false, Color.parseColor("#A685FA")));

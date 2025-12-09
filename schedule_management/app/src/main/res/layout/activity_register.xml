@@ -65,6 +65,18 @@
                     android:textSize="14sp"
                     android:layout_marginBottom="16dp"/>
 
+                <EditText
+                    android:id="@+id/etSecurityCheck"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="Answer: What is your pet's name?"
+                    android:drawableStart="@android:drawable/ic_menu_help"
+                    android:drawablePadding="16dp"
+                    android:padding="12dp"
+                    android:backgroundTint="#CCCCCC"
+                    android:textSize="14sp"
+                    android:layout_marginBottom="16dp"/>
+
                 <!-- Course Input -->
                 <EditText
                     android:id="@+id/etRegCourse"

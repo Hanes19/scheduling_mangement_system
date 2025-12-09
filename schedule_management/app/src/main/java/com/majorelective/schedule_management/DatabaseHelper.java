@@ -9,8 +9,7 @@ import android.database.sqlite.SQLiteOpenHelper;
 public class DatabaseHelper extends SQLiteOpenHelper {
 
     private static final String DATABASE_NAME = "ScheduleManager.db";
-    // INCREMENTED VERSION TO 4 TO ADD NEW INSTRUCTOR FIELDS
-    private static final int DATABASE_VERSION = 5;
+    private static final int DATABASE_VERSION = 7; // Updated version
 
     // Table Names
     private static final String TABLE_USERS = "users";
@@ -21,10 +20,11 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     // Common Column Names
     private static final String KEY_ID = "id";
 
-    // USERS Table Columns (Authentication)
+    // USERS Table Columns
     private static final String KEY_USERNAME = "username";
     private static final String KEY_PASSWORD = "password";
     private static final String KEY_ROLE = "role";
+    private static final String KEY_SECURITY_ANSWER = "security_answer"; // New Column
 
     // STUDENTS Table Columns
     private static final String KEY_STUDENT_NAME = "name";
@@ -37,15 +37,14 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     private static final String KEY_NAME = "name";
     private static final String KEY_DEPT = "department";
     private static final String KEY_LOGIN_ID = "login_id";
-    // NEW COLUMNS
     private static final String KEY_INST_SUBJECT = "subject";
     private static final String KEY_INST_YEAR = "year_level";
     private static final String KEY_INST_SECTION = "section";
 
-
     // CLASSES Table Columns
     private static final String KEY_SUBJECT = "subject";
     private static final String KEY_SECTION = "section";
+    private static final String KEY_CLASS_YEAR = "year_level"; // New Column for Class Year
     private static final String KEY_DAY = "day";
     private static final String KEY_START_TIME = "start_time";
     private static final String KEY_END_TIME = "end_time";
@@ -58,18 +57,20 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
     @Override
     public void onCreate(SQLiteDatabase db) {
-        // 1. Users Table (Auth)
+        // 1. Users Table (Updated with Security Answer)
         String CREATE_USERS_TABLE = "CREATE TABLE " + TABLE_USERS + "("
                 + KEY_USERNAME + " TEXT PRIMARY KEY,"
                 + KEY_PASSWORD + " TEXT,"
-                + KEY_ROLE + " TEXT" + ")";
+                + KEY_ROLE + " TEXT,"
+                + KEY_SECURITY_ANSWER + " TEXT" + ")";
         db.execSQL(CREATE_USERS_TABLE);
 
-        // 2. Classes Table
+        // 2. Classes Table (Updated with Class Year)
         String CREATE_CLASSES_TABLE = "CREATE TABLE " + TABLE_CLASSES + "("
                 + KEY_ID + " INTEGER PRIMARY KEY AUTOINCREMENT,"
                 + KEY_SUBJECT + " TEXT,"
                 + KEY_SECTION + " TEXT,"
+                + KEY_CLASS_YEAR + " TEXT,"
                 + KEY_DAY + " TEXT,"
                 + KEY_START_TIME + " TEXT,"
                 + KEY_END_TIME + " TEXT,"
@@ -77,7 +78,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 + KEY_INSTRUCTOR_NAME + " TEXT" + ")";
         db.execSQL(CREATE_CLASSES_TABLE);
 
-        // 3. Instructors Table (UPDATED)
+        // 3. Instructors Table
         String CREATE_INSTRUCTORS_TABLE = "CREATE TABLE " + TABLE_INSTRUCTORS + "("
                 + KEY_ID + " INTEGER PRIMARY KEY AUTOINCREMENT,"
                 + KEY_NAME + " TEXT,"
@@ -107,19 +108,24 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         values.put(KEY_USERNAME, username);
         values.put(KEY_PASSWORD, password);
         values.put(KEY_ROLE, role);
+        // Default admin has no security answer, or you can set a default one
+        values.put(KEY_SECURITY_ANSWER, "admin");
         db.insertWithOnConflict(TABLE_USERS, null, values, SQLiteDatabase.CONFLICT_IGNORE);
     }
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
+        // Drop older tables if existed
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_USERS);
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_CLASSES);
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_INSTRUCTORS);
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_STUDENTS);
+        // Create tables again
         onCreate(db);
     }
 
     // --- AUTH OPERATIONS ---
+
     public String checkLogin(String username, String password) {
         SQLiteDatabase db = this.getReadableDatabase();
         Cursor cursor = db.query(TABLE_USERS, new String[]{KEY_ROLE},
@@ -134,16 +140,20 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         return null;
     }
 
-    public boolean registerStudent(String name, String email, String course, String year, String section, String password) {
+    // Updated Register to include Security Answer
+    public boolean registerStudent(String name, String email, String course, String year, String section, String password, String securityAnswer) {
         SQLiteDatabase db = this.getWritableDatabase();
         db.beginTransaction();
         try {
+            // 1. Insert into Users Table
             ContentValues userValues = new ContentValues();
             userValues.put(KEY_USERNAME, email);
             userValues.put(KEY_PASSWORD, password);
             userValues.put(KEY_ROLE, "student");
+            userValues.put(KEY_SECURITY_ANSWER, securityAnswer);
             long result1 = db.insert(TABLE_USERS, null, userValues);
 
+            // 2. Insert into Students Table
             ContentValues studentValues = new ContentValues();
             studentValues.put(KEY_STUDENT_NAME, name);
             studentValues.put(KEY_STUDENT_EMAIL, email);
@@ -164,12 +174,47 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         return false;
     }
 
+    // --- FORGOT PASSWORD OPERATIONS ---
+
+    // Check if the user exists (for forgot password)
+    public boolean checkUser(String username) {
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor = db.rawQuery("SELECT * FROM " + TABLE_USERS + " WHERE " + KEY_USERNAME + " = ?", new String[]{username});
+        boolean exists = cursor.getCount() > 0;
+        cursor.close();
+        return exists;
+    }
+
+    // Verify Security Answer
+    public boolean verifySecurityAnswer(String username, String answer) {
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor = db.query(TABLE_USERS, null,
+                KEY_USERNAME + "=? AND " + KEY_SECURITY_ANSWER + "=?",
+                new String[]{username, answer}, null, null, null);
+
+        boolean isCorrect = cursor.getCount() > 0;
+        cursor.close();
+        return isCorrect;
+    }
+
+    // Update Password
+    public boolean updatePassword(String username, String newPassword) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues values = new ContentValues();
+        values.put(KEY_PASSWORD, newPassword);
+        long result = db.update(TABLE_USERS, values, KEY_USERNAME + " = ?", new String[]{username});
+        return result != -1;
+    }
+
     // --- CLASS OPERATIONS ---
-    public boolean addClass(String subject, String section, String day, String start, String end, String room, String instructor) {
+
+    // Updated to include Year Level
+    public boolean addClass(String subject, String section, String year, String day, String start, String end, String room, String instructor) {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues values = new ContentValues();
         values.put(KEY_SUBJECT, subject);
         values.put(KEY_SECTION, section);
+        values.put(KEY_CLASS_YEAR, year);
         values.put(KEY_DAY, day);
         values.put(KEY_START_TIME, start);
         values.put(KEY_END_TIME, end);
@@ -189,14 +234,12 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         return db.rawQuery("SELECT * FROM " + TABLE_CLASSES + " WHERE " + KEY_INSTRUCTOR_NAME + " = ?", new String[]{instructorName});
     }
 
-    // --- INSTRUCTOR OPERATIONS (UPDATED) ---
+    // --- INSTRUCTOR OPERATIONS ---
 
-    // Updated to take all fields
     public boolean addInstructor(String name, String department, String subject, String year, String section, String loginId, String password) {
         SQLiteDatabase db = this.getWritableDatabase();
         db.beginTransaction();
         try {
-            // 1. Add details to Instructors Table
             ContentValues values = new ContentValues();
             values.put(KEY_NAME, name);
             values.put(KEY_DEPT, department);
@@ -206,11 +249,12 @@ public class DatabaseHelper extends SQLiteOpenHelper {
             values.put(KEY_INST_SECTION, section);
             long result1 = db.insert(TABLE_INSTRUCTORS, null, values);
 
-            // 2. Add login credential to Users Table
             ContentValues userValues = new ContentValues();
             userValues.put(KEY_USERNAME, loginId);
-            userValues.put(KEY_PASSWORD, password); // Use provided password
+            userValues.put(KEY_PASSWORD, password);
             userValues.put(KEY_ROLE, "instructor");
+            // Default answer for added instructors (you might want to add a field for this in AddInstructor UI later)
+            userValues.put(KEY_SECURITY_ANSWER, "teacher");
             long result2 = db.insertWithOnConflict(TABLE_USERS, null, userValues, SQLiteDatabase.CONFLICT_REPLACE);
 
             if (result1 != -1 && result2 != -1) {
@@ -225,23 +269,19 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         return false;
     }
 
-    // Get specific instructor by ID (Primary Key) for editing
     public Cursor getInstructorById(String id) {
         SQLiteDatabase db = this.getReadableDatabase();
         return db.rawQuery("SELECT * FROM " + TABLE_INSTRUCTORS + " WHERE " + KEY_LOGIN_ID + " = ?", new String[]{id});
     }
 
-    // Delete Instructor
     public boolean deleteInstructor(String loginId) {
         SQLiteDatabase db = this.getWritableDatabase();
         db.beginTransaction();
         try {
-            // 1. Delete from Instructors table
             int result1 = db.delete(TABLE_INSTRUCTORS, KEY_LOGIN_ID + "=?", new String[]{loginId});
-            // 2. Delete login credentials
             int result2 = db.delete(TABLE_USERS, KEY_USERNAME + "=?", new String[]{loginId});
 
-            if (result1 > 0) { // Should delete at least the profile
+            if (result1 > 0) {
                 db.setTransactionSuccessful();
                 return true;
             }
@@ -251,7 +291,6 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         return false;
     }
 
-    // Update Instructor
     public boolean updateInstructor(String originalId, String name, String dept, String subject, String year, String section, String newPassword) {
         SQLiteDatabase db = this.getWritableDatabase();
         db.beginTransaction();
@@ -263,10 +302,8 @@ public class DatabaseHelper extends SQLiteOpenHelper {
             values.put(KEY_INST_YEAR, year);
             values.put(KEY_INST_SECTION, section);
 
-            // Update profile
             int result1 = db.update(TABLE_INSTRUCTORS, values, KEY_LOGIN_ID + "=?", new String[]{originalId});
 
-            // Update password if provided
             if (newPassword != null && !newPassword.isEmpty()) {
                 ContentValues userValues = new ContentValues();
                 userValues.put(KEY_PASSWORD, newPassword);
@@ -299,12 +336,13 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         }
         return null;
     }
-    // [NEW] Get Student's Section by their Email/ID
+
+    // --- STUDENT HELPER METHODS ---
+
     public String getStudentSection(String email) {
         SQLiteDatabase db = this.getReadableDatabase();
         Cursor cursor = db.query(TABLE_STUDENTS, new String[]{KEY_STUDENT_SECTION},
                 KEY_STUDENT_EMAIL + "=?", new String[]{email}, null, null, null);
-
         if (cursor != null) {
             if (cursor.moveToFirst()) {
                 String section = cursor.getString(0);
@@ -313,21 +351,34 @@ public class DatabaseHelper extends SQLiteOpenHelper {
             }
             cursor.close();
         }
-        return null; // Return null if student not found
+        return null;
     }
 
-    // [NEW] Get Classes only for a specific Section
-    public Cursor getClassesBySection(String section) {
+    public String getStudentYear(String email) {
         SQLiteDatabase db = this.getReadableDatabase();
-        // Filters the classes table where the 'section' column matches the student's section
-        return db.rawQuery("SELECT * FROM " + TABLE_CLASSES + " WHERE " + KEY_SECTION + " = ?", new String[]{section});
+        Cursor cursor = db.query(TABLE_STUDENTS, new String[]{KEY_STUDENT_YEAR},
+                KEY_STUDENT_EMAIL + "=?", new String[]{email}, null, null, null);
+        if (cursor != null) {
+            if (cursor.moveToFirst()) {
+                String year = cursor.getString(0);
+                cursor.close();
+                return year;
+            }
+            cursor.close();
+        }
+        return null;
     }
 
-    // Check for scheduling conflicts (Overlaps)
+    // Get Classes matching BOTH Section AND Year Level
+    public Cursor getClassesForStudent(String section, String yearLevel) {
+        SQLiteDatabase db = this.getReadableDatabase();
+        return db.rawQuery("SELECT * FROM " + TABLE_CLASSES +
+                        " WHERE " + KEY_SECTION + " = ? AND " + KEY_CLASS_YEAR + " = ?",
+                new String[]{section, yearLevel});
+    }
+
     public boolean isScheduleConflict(String day, String startTime, String endTime, String room) {
         SQLiteDatabase db = this.getReadableDatabase();
-
-        // Select all classes happening on the same day in the same room
         Cursor cursor = db.rawQuery("SELECT " + KEY_START_TIME + ", " + KEY_END_TIME +
                         " FROM " + TABLE_CLASSES +
                         " WHERE " + KEY_DAY + "=? AND " + KEY_ROOM + "=?",
@@ -340,24 +391,20 @@ public class DatabaseHelper extends SQLiteOpenHelper {
             do {
                 String dbStartStr = cursor.getString(0);
                 String dbEndStr = cursor.getString(1);
-
                 int dbStart = convertTimeToInt(dbStartStr);
                 int dbEnd = convertTimeToInt(dbEndStr);
 
-                // LOGIC: Check for Overlap
-                // (NewStart < ExistingEnd) AND (NewEnd > ExistingStart)
+                // Check overlap
                 if (newStart < dbEnd && newEnd > dbStart) {
                     cursor.close();
-                    return true; // Conflict found!
+                    return true;
                 }
             } while (cursor.moveToNext());
         }
-
         cursor.close();
-        return false; // No conflict
+        return false;
     }
 
-    // Helper to convert "HH:mm" string to minutes (e.g., "01:30" -> 90)
     private int convertTimeToInt(String time) {
         try {
             String[] parts = time.split(":");

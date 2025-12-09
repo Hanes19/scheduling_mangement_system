@@ -27,19 +27,17 @@
                 android:padding="32dp"
                 android:gravity="center_horizontal">
 
-                <!-- Icon/Header -->
-                <!-- Using a standard android lock icon as placeholder -->
                 <ImageView
                     android:layout_width="60dp"
                     android:layout_height="60dp"
                     android:src="@android:drawable/ic_lock_idle_lock"
-                    android:tint="#333333"
+                    app:tint="#333333"
                     android:layout_marginBottom="16dp"/>
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Forgot Password?"
+                    android:text="Reset Password"
                     android:textSize="24sp"
                     android:fontFamily="sans-serif-black"
                     android:textColor="#333333"
@@ -48,15 +46,14 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Enter your email address and we'll send you a link to reset your password."
+                    android:text="Enter your email and new password."
                     android:textSize="14sp"
                     android:textColor="#757575"
                     android:gravity="center"
                     android:layout_marginBottom="32dp"/>
 
-                <!-- Email Input -->
                 <EditText
-                    android:id="@+id/etForgotEmail"
+                    android:id="@+id/etEmail"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:hint="School ID / Email"
@@ -66,14 +63,39 @@
                     android:padding="12dp"
                     android:backgroundTint="#CCCCCC"
                     android:textSize="14sp"
+                    android:layout_marginBottom="16dp"/>
+
+                <EditText
+                    android:id="@+id/etNewPass"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="New Password"
+                    android:inputType="textPassword"
+                    android:drawableStart="@android:drawable/ic_lock_lock"
+                    android:drawablePadding="16dp"
+                    android:padding="12dp"
+                    android:backgroundTint="#CCCCCC"
+                    android:textSize="14sp"
+                    android:layout_marginBottom="16dp"/>
+
+                <EditText
+                    android:id="@+id/etConfirmPass"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="Confirm Password"
+                    android:inputType="textPassword"
+                    android:drawableStart="@android:drawable/ic_lock_lock"
+                    android:drawablePadding="16dp"
+                    android:padding="12dp"
+                    android:backgroundTint="#CCCCCC"
+                    android:textSize="14sp"
                     android:layout_marginBottom="32dp"/>
 
-                <!-- Send Link Button -->
                 <Button
-                    android:id="@+id/btnSendResetLink"
+                    android:id="@+id/btnReset"
                     android:layout_width="match_parent"
                     android:layout_height="50dp"
-                    android:text="Send Reset Link"
+                    android:text="Update Password"
                     android:textAllCaps="false"
                     android:textSize="16sp"
                     android:textColor="@color/white"
@@ -82,9 +104,8 @@
                     android:stateListAnimator="@null"
                     android:layout_marginBottom="24dp"/>
 
-                <!-- Back to Login Link -->
                 <TextView
-                    android:id="@+id/tvBackToLogin"
+                    android:id="@+id/btnBack"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Back to Login"
