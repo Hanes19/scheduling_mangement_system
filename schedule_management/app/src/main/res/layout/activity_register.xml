@@ -66,7 +66,7 @@
                     android:layout_marginBottom="16dp"/>
 
                 <EditText
-                    android:id="@+id/etSecurityCheck"
+                    android:id="@+id/etSecurityAnswer"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:hint="Answer: What is your pet's name?"
@@ -78,20 +78,21 @@
                     android:layout_marginBottom="16dp"/>
 
                 <!-- Course Input -->
+
+                <!-- Year Level Input -->
                 <EditText
                     android:id="@+id/etRegCourse"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:hint="Course (e.g. BSIT)"
-                    android:inputType="textCapCharacters"
+                    android:layout_marginBottom="16dp"
+                    android:backgroundTint="#CCCCCC"
                     android:drawableStart="@android:drawable/ic_menu_sort_by_size"
                     android:drawablePadding="16dp"
+                    android:hint="Course (e.g. BSIT)"
+                    android:inputType="textCapCharacters"
                     android:padding="12dp"
-                    android:backgroundTint="#CCCCCC"
-                    android:textSize="14sp"
-                    android:layout_marginBottom="16dp"/>
+                    android:textSize="14sp" />
 
-                <!-- Year Level Input -->
                 <EditText
                     android:id="@+id/etRegYear"
                     android:layout_width="match_parent"

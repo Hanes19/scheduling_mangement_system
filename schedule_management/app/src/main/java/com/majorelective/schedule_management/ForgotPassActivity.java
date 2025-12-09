@@ -22,7 +22,7 @@ public class ForgotPassActivity extends AppCompatActivity {
             dbHelper = new DatabaseHelper(this);
 
             etEmail = findViewById(R.id.etEmail);
-            etSecurityCheck = findViewById(R.id.etSecurityCheck); // Bind View
+            etSecurityCheck = findViewById(R.id.etSecurityAnswer); // Bind View
             etNewPass = findViewById(R.id.etNewPass);
             etConfirmPass = findViewById(R.id.etConfirmPass);
             btnReset = findViewById(R.id.btnReset);
